@@ -1,0 +1,1224 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Amarelinha do Giz — Recuperação de História 5º ano</title>
+<style>
+:root{
+  --calcada:#FFFBF3; --asfalto:#36343A; --cinza:#6E6A72;
+  --rosa:#E0457B; --azul:#2E7DD1; --amarelo:#E9A400; --verde:#2E9E62; --lilas:#8457C9;
+  --borda:#E4DCCF; --sombra:0 4px 14px rgba(54,52,58,.10);
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{
+  font-family:'Comic Sans MS','Segoe UI',system-ui,-apple-system,sans-serif;
+  background:var(--calcada);
+  background-image:
+    radial-gradient(circle at 12% 18%, rgba(224,69,123,.05) 0 10px, transparent 11px),
+    radial-gradient(circle at 78% 42%, rgba(46,125,209,.05) 0 14px, transparent 15px),
+    radial-gradient(circle at 36% 78%, rgba(233,164,0,.05) 0 12px, transparent 13px);
+  color:var(--asfalto);font-size:17px;line-height:1.6;padding-bottom:90px;
+}
+.wrap{max-width:900px;margin:0 auto;padding:0 12px;}
+header.topo{
+  background:linear-gradient(135deg,#FFF6E8,#FFEFF4 55%,#EAF3FD);
+  border-bottom:5px dashed var(--rosa);padding:20px 12px 18px;text-align:center;
+}
+header.topo h1{font-size:1.65rem;color:var(--rosa);line-height:1.25;}
+header.topo .sub{color:var(--cinza);font-size:.95rem;margin-top:5px;}
+.selo{display:inline-block;background:#fff;border:3px solid var(--azul);color:var(--azul);
+  border-radius:22px;padding:5px 16px;font-weight:bold;font-size:.9rem;margin-top:10px;}
+.gizinho{background:#fff;border:3px dashed var(--amarelo);border-radius:18px;
+  padding:13px 15px;margin:14px auto 0;max-width:640px;text-align:left;font-size:.97rem;}
+.gizinho b{color:var(--amarelo);}
+
+nav.abas{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;
+  padding:14px 10px 4px;position:sticky;top:0;background:rgba(255,251,243,.96);z-index:30;
+  border-bottom:2px solid var(--borda);}
+nav.abas button{font-family:inherit;font-size:.9rem;font-weight:bold;cursor:pointer;
+  background:#fff;border:3px solid var(--borda);color:var(--cinza);
+  border-radius:16px;padding:9px 13px;line-height:1.2;}
+nav.abas button .n{display:block;font-size:.72rem;font-weight:normal;opacity:.8;}
+nav.abas button.on{border-color:var(--rosa);color:var(--rosa);background:#FFF3F7;}
+
+.pagina{display:none;padding-top:18px;}
+.pagina.on{display:block;}
+.cartao{background:#fff;border:2px solid var(--borda);border-radius:20px;
+  padding:18px;margin-bottom:16px;box-shadow:var(--sombra);}
+.cartao>h2{font-size:1.2rem;margin-bottom:10px;color:var(--azul);}
+.cartao>h3{font-size:1.05rem;margin:14px 0 8px;}
+.cartao p+p{margin-top:9px;}
+.aviso{background:#FFF8E6;border:3px dashed var(--amarelo);border-radius:16px;padding:13px 15px;margin:12px 0;}
+.aviso.prova{background:#EAF3FD;border-color:var(--azul);}
+.aviso.erro{background:#FFF0F4;border-color:var(--rosa);}
+.aviso.ok{background:#EDF9F2;border-color:var(--verde);}
+
+/* casas da amarelinha (decoração do topo das abas) */
+.quadra{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin:4px 0 14px;}
+.quadra span{width:30px;height:30px;border:2px dashed var(--borda);border-radius:7px;
+  display:flex;align-items:center;justify-content:center;font-size:.75rem;color:var(--cinza);background:#fff;}
+.quadra span.feito{border-style:solid;border-color:var(--verde);background:#EDF9F2;color:var(--verde);font-weight:bold;}
+.quadra span.erro{border-style:solid;border-color:var(--rosa);background:#FFF0F4;color:var(--rosa);font-weight:bold;}
+
+/* perguntas */
+.perg{border-top:2px dotted var(--borda);padding-top:14px;margin-top:14px;}
+.perg:first-of-type{border-top:0;}
+.perg .num{font-size:.8rem;color:var(--cinza);font-weight:bold;}
+.perg .enun{margin:4px 0 10px;font-weight:bold;}
+.alt{display:block;background:#FDFBF7;border:2px solid var(--borda);border-radius:14px;
+  padding:11px 13px;margin-bottom:8px;cursor:pointer;font-size:.97rem;}
+.alt:hover{border-color:var(--azul);}
+.alt .letra{display:inline-block;font-weight:bold;color:var(--cinza);margin-right:7px;}
+.alt.sel{border-color:var(--azul);background:#EAF3FD;}
+.alt.certa{border-color:var(--verde);background:#EDF9F2;}
+.alt.errada{border-color:var(--rosa);background:#FFF0F4;}
+.coment{margin:6px 0 2px;padding:11px 13px;border-radius:14px;font-size:.93rem;}
+.coment.ok{background:#EDF9F2;border:2px solid var(--verde);}
+.coment.no{background:#FFF0F4;border:2px solid var(--rosa);}
+
+.btn{font-family:inherit;font-size:1rem;font-weight:bold;cursor:pointer;border:0;
+  background:var(--azul);color:#fff;border-radius:16px;padding:12px 20px;margin:6px 6px 0 0;}
+.btn.rosa{background:var(--rosa);}
+.btn.verde{background:var(--verde);}
+.btn.fraco{background:#fff;color:var(--cinza);border:2px solid var(--borda);}
+.btn:disabled{opacity:.5;cursor:default;}
+
+.placar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:12px;
+  background:#FDFBF7;border:2px solid var(--borda);border-radius:16px;padding:11px 14px;font-weight:bold;}
+
+/* pílulas */
+.pil{border:2px solid var(--borda);border-radius:18px;margin-bottom:12px;overflow:hidden;background:#fff;}
+.pil>button.cab{width:100%;text-align:left;font-family:inherit;font-size:1rem;font-weight:bold;
+  cursor:pointer;background:#FDFBF7;border:0;border-left:9px solid var(--azul);padding:13px 15px;color:var(--asfalto);}
+.pil.rev>button.cab{background:#FFF8E6;}
+.pil .corpo{display:none;padding:14px 15px;border-top:2px dotted var(--borda);}
+.pil.aberta .corpo{display:block;}
+.pil .regra{background:#FDFBF7;border-radius:14px;padding:11px 13px;}
+.pil .exemplo{background:#EAF3FD;border-radius:14px;padding:11px 13px;margin-top:9px;}
+.pil .cai{background:#FFF8E6;border:2px dashed var(--amarelo);border-radius:14px;padding:11px 13px;margin-top:9px;font-size:.95rem;}
+.pil ul{margin:7px 0 0 20px;}
+.pil li{margin-bottom:4px;}
+.tag{display:inline-block;font-size:.72rem;font-weight:bold;border-radius:12px;padding:2px 9px;margin-left:6px;vertical-align:middle;}
+.tag.un{background:#F1ECFA;color:var(--lilas);}
+.tag.rev{background:#FFF0F4;color:var(--rosa);}
+
+/* cartões de pegadinha */
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px;}
+.card{background:#fff;border:3px dashed var(--rosa);border-radius:18px;padding:14px;cursor:pointer;
+  font-size:.95rem;min-height:112px;}
+.card .frente{font-weight:bold;}
+.card .atras{display:none;margin-top:9px;padding-top:9px;border-top:2px dotted var(--borda);color:var(--verde);}
+.card.virado{border-style:solid;border-color:var(--verde);background:#FBFFFC;}
+.card.virado .atras{display:block;}
+
+/* pula-pula */
+.pp{background:#FDFBF7;border:2px solid var(--borda);border-radius:18px;padding:15px;}
+.pp .duas{display:flex;flex-wrap:wrap;gap:9px;margin-top:10px;}
+.pp .duas button{flex:1 1 140px;font-family:inherit;font-size:.97rem;font-weight:bold;cursor:pointer;
+  background:#fff;border:3px solid var(--azul);color:var(--azul);border-radius:16px;padding:13px 11px;}
+.pp .barra{height:11px;background:#EFE9E0;border-radius:9px;overflow:hidden;margin-top:11px;}
+.pp .barra i{display:block;height:100%;background:var(--verde);width:0;}
+
+/* famílias de treino */
+.fam{border:2px solid var(--borda);border-radius:18px;margin-bottom:14px;background:#fff;}
+.fam>h3{background:#FDFBF7;border-left:9px solid var(--verde);border-radius:16px 16px 0 0;
+  padding:12px 15px;font-size:1rem;}
+.fam .conteudo{padding:4px 15px 15px;}
+.nivel{display:inline-block;font-size:.72rem;font-weight:bold;border-radius:12px;padding:2px 9px;margin-left:7px;}
+.nivel.f{background:#EDF9F2;color:var(--verde);}
+.nivel.m{background:#FFF8E6;color:#A87800;}
+.nivel.p{background:#FFF0F4;color:var(--rosa);}
+
+table.rel{width:100%;border-collapse:collapse;margin-top:10px;font-size:.93rem;}
+table.rel th,table.rel td{border:1px solid var(--borda);padding:8px 9px;text-align:left;}
+table.rel th{background:#FDFBF7;}
+
+.rodape{text-align:center;color:var(--cinza);font-size:.85rem;margin:26px 0 10px;}
+.barraBaixo{position:fixed;left:0;right:0;bottom:0;background:#fff;border-top:3px solid var(--borda);
+  padding:8px 12px;display:flex;flex-wrap:wrap;gap:8px;align-items:center;z-index:40;font-size:.85rem;}
+.barraBaixo .info{flex:1 1 150px;color:var(--cinza);}
+.barraBaixo button{font-family:inherit;font-size:.85rem;font-weight:bold;cursor:pointer;
+  background:#FDFBF7;border:2px solid var(--borda);border-radius:12px;padding:7px 11px;color:var(--cinza);}
+.barraBaixo input{font-family:inherit;font-size:.85rem;border:2px solid var(--borda);border-radius:12px;
+  padding:7px 9px;width:108px;}
+.modalBg{display:none;position:fixed;inset:0;background:rgba(54,52,58,.5);z-index:60;
+  align-items:center;justify-content:center;padding:16px;}
+.modalBg.on{display:flex;}
+.modalCx{background:#fff;border-radius:22px;padding:20px;max-width:560px;width:100%;
+  max-height:84vh;overflow:auto;border:4px solid var(--azul);}
+@media(max-width:420px){
+  body{font-size:16px;}
+  header.topo h1{font-size:1.35rem;}
+  nav.abas button{font-size:.8rem;padding:8px 10px;}
+  .cards{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+<header class="topo">
+  <div style="font-size:2rem;letter-spacing:4px;">🖍️ ▫️ ▫️ ▫️ ☁️</div>
+  <h1>Amarelinha do Giz</h1>
+  <div class="sub">Recuperação de <b>História</b> · 5º ano · Coração Feliz · 3º trimestre</div>
+  <div class="selo">🗓️ Prova: 27/11</div>
+  <div class="gizinho">
+    <b>Oi! Eu sou o Gizinho</b> 🖍️, um toquinho de giz. Desenhei esta amarelinha na calçada com
+    tudo o que caiu no 3º trimestre: as <b>Unidades 7, 8, 9 e 10</b>. São <b>5 casas</b> e você
+    pode pular para qualquer uma, na ordem que quiser — nada está trancado.
+    Comece pelo <b>Primeiro Pulo</b>: ele mostra o que você já sabe e o que estudar primeiro.
+    <b>Cuidado para não pisar na linha!</b>
+  </div>
+</header>
+
+<nav class="abas" id="abas">
+  <button data-p="1" class="on">1. Primeiro Pulo<span class="n">o que você já sabe + plano do dia</span></button>
+  <button data-p="2">2. Casas de Giz<span class="n">explicação fácil (15 assuntos)</span></button>
+  <button data-p="3">3. Pisou na Linha!<span class="n">pegadinhas + pula-pula</span></button>
+  <button data-p="4">4. Pátio do Treino<span class="n">28 exercícios por família</span></button>
+  <button data-p="5">5. Chegar no Céu<span class="n">prova final de 20 questões</span></button>
+</nav>
+
+<div class="wrap">
+
+<!-- ================= ABA 1 ================= -->
+<section class="pagina on" id="pg-1">
+  <div class="cartao">
+    <h2>🗓️ Plano de 1 dia (mais ou menos 1h45)</h2>
+    <p>Faça nesta ordem. Se o tempo acabar no meio, siga a dica de cada linha.</p>
+    <table class="rel">
+      <tr><th>Ordem</th><th>O que fazer</th><th>Tempo</th><th>Se o tempo acabar</th></tr>
+      <tr><td>1º</td><td><b>Primeiro Pulo</b> (as 15 perguntas desta casa)</td><td>10 min</td><td>Nunca pule esta: é ela que diz o que estudar.</td></tr>
+      <tr><td>2º</td><td><b>Casas de Giz</b> — leia primeiro as que ficaram com ⚠️</td><td>25 min</td><td>Leia só as ⚠️ e pare.</td></tr>
+      <tr><td>3º</td><td><b>Pisou na Linha!</b> — vire os cartões e jogue o Pula-Pula</td><td>20 min</td><td>Vire só os cartões; deixe o Pula-Pula.</td></tr>
+      <tr><td>4º</td><td><b>Pátio do Treino</b> — comece pelas famílias dos seus erros</td><td>35 min</td><td>Faça só o nível <b>fácil</b> de cada família.</td></tr>
+      <tr><td>5º</td><td><b>Chegar no Céu</b> — a prova final de 20 questões</td><td>15 min</td><td>Faça inteira mesmo com pressa: ela mostra como está você.</td></tr>
+    </table>
+    <div class="aviso">🖍️ <b>Gizinho avisa:</b> suas respostas ficam salvas neste aparelho. Pode fechar e voltar depois — a amarelinha continua do mesmo lugar.</div>
+  </div>
+
+  <div class="cartao">
+    <h2>🎯 Primeiro Pulo — 1 pergunta de cada assunto</h2>
+    <p>São <b>15 perguntas</b>, uma de cada assunto do trimestre. Não vale consultar: é só para
+    descobrir onde você está firme e onde precisa de giz novo. Responda todas e clique no botão do fim.</p>
+    <div class="quadra" id="quadraTerm"></div>
+    <div id="termConteudo"></div>
+    <button class="btn rosa" id="btnTerm">✔️ Ver o que eu preciso estudar</button>
+    <button class="btn fraco" id="btnTermRefazer">🔁 Fazer de novo</button>
+    <div id="termResultado"></div>
+  </div>
+</section>
+
+<!-- ================= ABA 2 ================= -->
+<section class="pagina" id="pg-2">
+  <div class="cartao">
+    <h2>🖍️ Casas de Giz — a explicação fácil de cada assunto</h2>
+    <p>Clique no título para abrir. Cada casa tem <b>a regra</b>, <b>um exemplo</b> e a caixinha
+    <b>“Como costuma cair na prova”</b>. As casas que você errou no Primeiro Pulo aparecem com <b>⚠️</b> —
+    comece por elas.</p>
+    <div class="aviso" id="avisoPilulas">Faça o <b>Primeiro Pulo</b> (casa 1) para o Gizinho marcar aqui o que é mais urgente.</div>
+    <button class="btn fraco" id="btnAbrirTodas">📖 Abrir todas</button>
+    <button class="btn fraco" id="btnFecharTodas">📕 Fechar todas</button>
+  </div>
+  <div id="listaPilulas"></div>
+</section>
+
+<!-- ================= ABA 3 ================= -->
+<section class="pagina" id="pg-3">
+  <div class="cartao">
+    <h2>⚠️ Pisou na Linha! — os erros que mais derrubam</h2>
+    <p>Na amarelinha, quem pisa na linha perde a vez. Estes <b>16 cartões</b> são as linhas da prova de
+    História: datas trocadas, leis parecidas e nomes que confundem. Clique no cartão para ver o lado certo.</p>
+    <div class="placar" id="placarCards">Cartões virados: 0 de 16</div>
+  </div>
+  <div class="cards" id="listaCards"></div>
+  <div class="cartao">
+    <h2>🦶 Pula-Pula — treino rápido e repetível</h2>
+    <p>São <b>12 rodadas</b> sorteadas e embaralhadas entre as confusões mais perigosas. Escolha o lado
+    certo. Pode repetir quantas vezes quiser: as rodadas mudam.</p>
+    <div class="pp" id="ppCaixa"></div>
+  </div>
+</section>
+
+<!-- ================= ABA 4 ================= -->
+<section class="pagina" id="pg-4">
+  <div class="cartao">
+    <h2>🏃 Pátio do Treino — 28 exercícios em 7 famílias</h2>
+    <p>Os exercícios estão juntos por <b>família de assunto</b>, e sobem de nível: primeiro
+    <span class="nivel f">fácil</span>, depois <span class="nivel m">médio</span> e por fim
+    <span class="nivel p">nível prova</span>. O comentário aparece assim que você responde.</p>
+    <div class="placar" id="placarTreino">Respondidas: 0 de 28 · Acertos: 0</div>
+    <div class="aviso" id="avisoTreino">Se você fez o Primeiro Pulo, comece pelas famílias marcadas com ⚠️.</div>
+  </div>
+  <div id="listaTreino"></div>
+</section>
+
+<!-- ================= ABA 5 ================= -->
+<section class="pagina" id="pg-5">
+  <div class="cartao">
+    <h2>☁️ Chegar no Céu — prova final</h2>
+    <p><b>20 questões</b> de A a D, do jeito da prova. O gabarito comentado só aparece
+    <b>depois de enviar</b>. Responda todas e clique em enviar.</p>
+    <div class="placar" id="placarProva">Respondidas: 0 de 20</div>
+  </div>
+  <div id="listaProva"></div>
+  <div class="cartao">
+    <button class="btn rosa" id="btnEnviarProva">📨 Enviar a prova</button>
+    <button class="btn fraco" id="btnRefazerProva">🔁 Refazer a prova</button>
+    <div id="resultadoProva"></div>
+  </div>
+</section>
+
+<div class="rodape">🖍️ Amarelinha do Giz · kit de recuperação de História · 5º ano · Coração Feliz</div>
+</div>
+
+<div class="barraBaixo">
+  <span class="info" id="infoSalvar">Salvando neste aparelho…</span>
+  <input id="inpPais" placeholder="código dos pais" autocomplete="off">
+  <button id="btnPais">👨‍👩‍👧 Relatório</button>
+  <button id="btnLimpar">🧽 Apagar minhas respostas</button>
+</div>
+
+<div class="modalBg" id="modalBg"><div class="modalCx" id="modalCx"></div></div>
+
+<script>
+/* ===================== DADOS: AS 15 CASAS (PÍLULAS) ===================== */
+var PILULAS=[
+{id:'a1',un:'Un. 7',titulo:'🌾 O Egito e as três estações do Nilo',
+ regra:'No Egito Antigo usava-se um <b>calendário solar de 365 dias</b>, criado para <b>prever as cheias do rio Nilo</b> e aproveitar a água, que deixava a terra <b>fértil</b>. Como fazia <b>calor o ano todo</b>, era difícil separar as quatro estações: por isso o ano tinha <b>três estações de quatro meses</b> cada.',
+ exemplo:'<b>Inundação</b> (julho a outubro): o Nilo enche e a água fica <b>avermelhada</b>; começa com o aparecimento da estrela <b>Sírio</b>, o ano-novo egípcio. <b>Semeadura</b> (novembro a fevereiro): a terra fica fértil e plantam-se <b>papiro</b> (papel), <b>linho</b> (tecidos), <b>cevada</b> (cerveja) e <b>trigo</b> (pães). <b>Colheita</b> (março a junho): recolhem os produtos e a água fica <b>esverdeada</b>.',
+ cai:'Pede o <b>número de estações</b> (3, e o motivo: calor o ano todo), a <b>cor da água</b> em cada estação e os <b>meses</b> de cada uma. Também pergunta o nome da estrela (Sírio) e o que era plantado.'},
+
+{id:'a2',un:'Un. 7',titulo:'🌙 Os três tipos de calendário e os marcos iniciais',
+ regra:'Existem <b>três tipos</b> de calendário: <b>solar</b> (baseado na volta da Terra ao redor do Sol), <b>lunar</b> (baseado na Lua — é o <b>mais antigo</b>) e <b>lunissolar</b> (mistura os dois). O <b>marco inicial</b> é o ponto onde cada povo começa a contar o tempo, e muitas vezes ele vem da <b>religião</b>.',
+ exemplo:'<ul><li><b>Judaico</b> — lunissolar; marco: o <b>êxodo</b> (a saída) dos judeus escravizados no Egito.</li><li><b>Gregoriano</b> (o nosso) — solar; marco: o <b>nascimento de Cristo</b> (ano 1).</li><li><b>Islâmico</b> — lunar (354 ou 355 dias); marco: a <b>Hégira</b>, a migração do profeta Maomé de Meca para Medina, no ano <b>622</b>.</li></ul>',
+ cai:'A prova troca os marcos de lugar: “o gregoriano começa na Hégira”. Decore o par <b>calendário + marco</b> e lembre que o <b>lunar é o mais antigo</b>.'},
+
+{id:'a3',un:'Un. 7',titulo:'📅 Como nasceu o calendário que usamos hoje',
+ regra:'O <b>calendário gregoriano</b> teve origem em <b>Roma</b> e foi mudando <b>ao longo de séculos</b> — não surgiu de uma vez só. São <b>quatro etapas</b>, na ordem:',
+ exemplo:'<ul><li><b>753 a.C. — Rômulo</b>: cria o calendário romano (lunar, 304 dias, 10 meses).</li><li><b>Numa Pompílio</b>: acrescenta <b>janeiro e fevereiro</b>, chegando a 12 meses.</li><li><b>46 a.C. — Júlio César</b>: cria o <b>calendário juliano</b> (365 dias, com o ano começando em janeiro).</li><li><b>1582 — papa Gregório XIII</b>: cria o <b>gregoriano</b>, que usamos hoje.</li></ul>Os meses <b>julho</b> e <b>agosto</b> homenageiam <b>Júlio César</b> e <b>César Augusto</b>.',
+ cai:'Pergunta “quem criou o quê” e pede a <b>ordem</b>. A pegadinha favorita é dizer que o papa Gregório XIII fez tudo sozinho, ou trocar Rômulo por Júlio César.'},
+
+{id:'a4',un:'Un. 7',titulo:'🔢 Os maias e o calendário Haab',
+ regra:'Os <b>maias</b>, na América, tinham o calendário <b>Haab</b>, que era <b>solar</b>: <b>18 meses de 20 dias</b> (360 dias) <b>mais 5 dias</b> no fim — o período <b>Wayeb</b> —, completando <b>365 dias</b>.',
+ exemplo:'18 × 20 = 360; 360 + 5 = <b>365</b>. A contagem maia começava no <b>ano zero</b>, que corresponde a <b>11 de agosto de 3114 a.C.</b>',
+ cai:'A alternativa errada quase sempre diz “12 meses de 30 dias”. Lembre: <b>18 meses de 20 dias + 5</b>. A conta 18×20+5 é a prova de que dá 365.'},
+
+{id:'a5',un:'Un. 7',titulo:'✨ O céu dos povos indígenas do Brasil',
+ regra:'Os povos indígenas do Brasil criaram a <b>astronomia indígena</b>: observavam o Sol, a Lua e as <b>constelações</b> (conjuntos de estrelas que formam figuras) e ligavam isso aos <b>fenômenos da natureza</b> — chuva, seca, calor e frio. Quando uma constelação aparecia no céu, era sinal de que uma <b>estação</b> chegava.',
+ exemplo:'Para os povos <b>Tupi-Guarani</b>:<ul><li>🐃 <b>Anta do Norte</b> → <b>primavera</b> (2ª quinzena de setembro)</li><li>👴 <b>Homem Velho</b> → <b>verão</b> (2ª quinzena de dezembro)</li><li>🦌 <b>Cervo</b> (ou Veado) → <b>outono</b> (2ª quinzena de março)</li><li>🐦 <b>Ema</b> → <b>inverno</b> (2ª quinzena de junho)</li></ul>',
+ cai:'Pede a constelação de uma estação (ou o contrário). Dica do Gizinho: <b>E</b>ma = <b>I</b>nverno (as duas estações “frias” do alfabeto ficam juntas na sua cabeça) e <b>A</b>nta = primavera, que também começa com vogal.'},
+
+{id:'a6',un:'Un. 8',titulo:'⚖️ O que é cidadania: direitos e deveres',
+ regra:'<b>Cidadania</b> é o conjunto de <b>direitos E deveres</b> de uma pessoa em relação ao <b>Estado</b> onde ela vive. Os direitos se dividem em <b>três grupos</b>.',
+ exemplo:'<ul><li><b>Civis</b>: ir e vir, liberdade de expressão, de pensamento e de religião, direito à justiça e à propriedade.</li><li><b>Políticos</b>: votar, eleger-se, participar de partidos, propor leis.</li><li><b>Sociais</b>: educação, saúde, moradia, trabalho, lazer.</li></ul>No Brasil esses direitos estão garantidos pela <b>Constituição de 1988</b> e por <b>estatutos</b>, como o <b>ECA</b> (Estatuto da Criança e do Adolescente) e o Estatuto da Igualdade Racial.',
+ cai:'Dá um exemplo e pergunta o grupo: “votar” → político; “estudar” → social; “dar sua opinião” → civil. Cuidado com a definição: cidadania <b>não é só</b> o direito de votar, e também inclui <b>deveres</b>.'},
+
+{id:'a7',un:'Un. 8',titulo:'🏛️ Atenas: o berço da democracia',
+ regra:'As primeiras ideias de cidadania surgiram há <b>mais de 2500 anos</b>, na <b>Grécia Antiga</b>, na cidade de <b>Atenas</b>, onde nasceu a <b>democracia</b>. Mas a cidadania <b>não era para todos</b>: só eram cidadãos os <b>homens livres nascidos em Atenas</b>. Ficavam de fora as <b>mulheres</b>, os <b>estrangeiros</b> (metecos) e os <b>escravizados</b>.',
+ exemplo:'Atenas tinha <b>democracia direta</b>: os próprios cidadãos votavam e decidiam tudo na <b>Assembleia</b>. O Brasil tem <b>democracia representativa</b>: o povo <b>elege representantes</b> que decidem por ele. Para formar o cidadão, os gregos valorizavam a educação, chamada <b>Paideia</b> (ginástica, música, leitura e escrita).',
+ cai:'Pergunta <b>quem podia ser cidadão</b> em Atenas (e a resposta errada é “todas as pessoas”) e a diferença entre <b>direta</b> e <b>representativa</b> — não troque qual é a do Brasil.'},
+
+{id:'a8',un:'Un. 8',titulo:'🏟️ Roma: patrícios, plebeus e a república',
+ regra:'<b>Roma</b> foi fundada em <b>753 a.C.</b> e reunia vários povos, como os <b>latinos</b> e os <b>etruscos</b>. A sociedade tinha dois grupos principais: os <b>patrícios</b> (as famílias nobres, donas das maiores terras) e os <b>plebeus</b> (o restante da população, o <i>populus</i> — camponeses, artesãos e comerciantes). Havia ainda os <b>clientes</b> (prestavam serviços aos patrícios em troca de proteção) e os <b>escravizados</b>.',
+ exemplo:'Só os <b>patrícios</b> eram cidadãos e podiam ocupar cargos públicos, como o <b>Senado</b>. Em <b>509 a.C.</b> Roma virou uma <b>república</b> — palavra que significa <b>“coisa pública”</b>: um governo com regras, que é assunto de todos e não propriedade de uma pessoa só. Quando Roma entrou em muitas guerras, os plebeus tiveram de servir no exército (a <b>legião</b>, como <b>legionários</b>) e, em troca, passaram a <b>exigir mais participação política</b>.',
+ cai:'A pegadinha inverte os grupos (“os plebeus eram os cidadãos”). E pergunta <b>como</b> os plebeus conquistaram direitos: servindo na <b>legião</b> durante as guerras.'},
+
+{id:'a9',un:'Un. 9',titulo:'🕊️ A ONU (1945) e a Declaração Universal (1948)',
+ regra:'<b>Direitos humanos</b> são direitos garantidos por lei a <b>toda pessoa</b>, não importa a etnia, a origem, a cultura, a idade, a nacionalidade, o grupo social ou a religião — como o direito à vida, à liberdade, à educação e ao trabalho. Eles ganharam força depois da <b>Segunda Guerra Mundial (1939–1945)</b>, que deixou milhões de vítimas e cidades destruídas.',
+ exemplo:'<ul><li><b>26 de junho de 1945</b> — na <b>Conferência de São Francisco</b> (Estados Unidos), <b>50 países</b>, incluindo o Brasil, assinaram a <b>Carta das Nações Unidas</b>, marco da criação da <b>ONU</b>.</li><li><b>1946</b> — a ONU cria a <b>UNICEF</b>, para os direitos de crianças e adolescentes.</li><li><b>1948</b> — a ONU estabelece a <b>Declaração Universal dos Direitos Humanos</b>, com <b>30 artigos</b>. Ela é <b>universal</b>: vale para todas as pessoas, em todo o mundo. O dia <b>10 de dezembro</b> é o Dia Internacional dos Direitos Humanos.</li></ul>A Declaração foi inspirada na <b>Declaração dos Direitos do Homem e do Cidadão</b> (França, <b>1789</b>, na Revolução Francesa: liberdade, igualdade e fraternidade).',
+ cai:'É a confusão nº 1 da prova: <b>1945 = Carta das Nações Unidas (ONU)</b>; <b>1948 = Declaração Universal (30 artigos)</b>. Também pergunta o que “universal” quer dizer e lembra que a Declaração fala de direitos <b>e de deveres</b> com a comunidade.'},
+
+{id:'a10',un:'Un. 9',titulo:'📣 Os abolicionistas e as pressões pelo fim da escravidão',
+ regra:'No Brasil surgiram <b>movimentos abolicionistas</b> — que lutavam pela <b>extinção da escravidão</b>. Eram formados, em geral, por <b>ex-escravizados</b> e <b>profissionais liberais</b> (médicos, advogados, escritores, artistas e jornalistas), muitos deles filhos de escravizados: <b>Maria Firmina dos Reis</b>, <b>Luiz Gama</b>, <b>André Rebouças</b>, <b>Castro Alves</b>, <b>Joaquim Nabuco</b> e <b>José do Patrocínio</b>.',
+ exemplo:'<b>José do Patrocínio</b> (1853–1905) era filho de uma escravizada alforriada; formou-se em Farmácia, mas dedicou-se ao <b>jornalismo</b>: fundou o jornal <b>A Cidade do Rio</b> e, com um grupo, a <b>Confederação Abolicionista</b>. Duas forças empurravam o fim da escravidão: <b>pressões internas</b> (os abolicionistas e a <b>resistência dos próprios escravizados</b>) e <b>pressões externas</b> (a <b>Inglaterra</b> queria vender seus produtos industrializados e, para isso, o Brasil precisava do <b>trabalho assalariado</b>, que criaria um grande <b>mercado consumidor</b>). Assim, a escravidão foi abolida <b>gradativamente</b>, lei por lei.',
+ cai:'Pede para separar <b>interna</b> (de dentro do Brasil) de <b>externa</b> (de outro país) e o <b>motivo da Inglaterra</b>: quem recebe salário pode comprar. Cuidado: ela queria <b>vender</b> produtos, não comprar café.'},
+
+{id:'a11',un:'Un. 9',titulo:'📜 As leis da abolição: 1850 → 1871 → 1884 → 1885 → 1888',
+ regra:'A escravidão <b>não acabou de uma vez</b>: foi lei por lei. Esta é a casa mais cobrada do trimestre — decore a <b>ordem</b> e <b>o que cada lei fez</b>.',
+ exemplo:'<ul><li><b>1850 — Lei Eusébio de Queirós</b>: proibiu o <b>tráfico negreiro</b>. A escravidão continuou, e o comércio <b>interno</b> de escravizados ficou <b>mais intenso e mais caro</b>.</li><li><b>1871 — Lei do Ventre Livre</b>: declarava livre toda criança nascida de escravizada. Mas ela ficava sob a autoridade do senhor da mãe até os <b>8 anos</b>; depois, o dono podia receber dinheiro do governo ou usar os <b>serviços da criança até os 21 anos</b>.</li><li><b>1884</b>: abolição no <b>Ceará</b> (depois de três anos de luta de <b>jangadeiros</b>, pescadores e trabalhadores negros livres e libertos), no <b>Amazonas</b> e no <b>Rio Grande do Sul</b> (com campanha popular e jornalística; lá os escravocratas resistiram menos, porque muitos fazendeiros não tinham recursos para comprar escravizados, que ficaram mais caros depois do fim do tráfico).</li><li><b>1885 — Lei dos Sexagenários</b>: libertava quem tivesse <b>mais de 60 anos</b>. Libertou pouquíssimos: por causa dos maus-tratos, poucos chegavam a essa idade — e ainda deviam <b>3 anos de trabalho</b> como indenização, acabando abandonados.</li><li><b>1888 — Lei Áurea</b>: assinada pela <b>princesa Isabel</b>, decretou a abolição da escravidão <b>em todo o Brasil</b>.</li></ul>',
+ cai:'Vem como “coloque em ordem” ou “de qual lei o texto fala”. Pegadinhas certas: a de <b>1850 proibiu só o tráfico</b> (não a escravidão) e o <b>Ventre Livre</b> era livre <b>no papel</b>. Dica: <b>SEXA</b>genários lembra <b>SESSENTA</b>.'},
+
+{id:'a12',un:'Un. 9',titulo:'🏚️ Depois da abolição: a República de 1889 e a cidadania negada',
+ regra:'Por muito tempo o Brasil foi uma <b>monarquia</b>: governo de um rei ou rainha, em que o direito de governar passa para os <b>descendentes</b>. Na década de 1880, comerciantes, jornalistas, políticos e militares queriam <b>mais participação política</b>; e os grandes <b>fazendeiros escravocratas</b>, que <b>perderam sua principal mão de obra</b> com a abolição de 1888, <b>deixaram de apoiar a Coroa</b>.',
+ exemplo:'<b>15 de novembro de 1889</b> — pouco mais de um ano depois da abolição, o marechal <b>Deodoro da Fonseca</b>, com apoio de tropas do Exército, <b>proclamou a República</b> e se tornou o <b>primeiro presidente</b>. Mas muitos <b>ex-escravizados não tiveram acesso</b> aos direitos básicos da cidadania — <b>moradia, educação, saúde e trabalho assalariado</b>: foram para os centros urbanos e passaram a morar em habitações precárias, os <b>cortiços</b>. A <b>discriminação racial continuou</b>, e industriais, comerciantes e agricultores preferiram empregar <b>imigrantes europeus</b>.',
+ cai:'Pergunta <b>quem</b> proclamou a República e <b>por que</b> a monarquia caiu (os fazendeiros perderam a mão de obra). E pede a diferença entre ganhar a <b>liberdade</b> e ter <b>cidadania</b>.'},
+
+{id:'a13',un:'Un. 9',titulo:'⚓ A Revolta da Chibata (1910)',
+ regra:'Em busca de trabalho, muitos ex-escravizados entraram na <b>Marinha</b>, no Rio de Janeiro. A esquadra era moderna (navios importados da <b>Inglaterra</b>), mas os marinheiros, <b>em sua maioria negros</b>, sofriam <b>castigos físicos</b> e de isolamento que lembravam a escravidão, e eram alimentados com <b>pão e água</b>.',
+ exemplo:'Em <b>novembro de 1910</b>, um marinheiro foi condenado a <b>250 chibatadas</b> e morreu. Então <b>2 300 homens</b>, liderados pelo marinheiro <b>João Cândido</b>, começaram a <b>Revolta da Chibata</b>, que durou <b>quatro dias</b>: tomaram <b>cinco navios de guerra</b> e escreveram um <b>manifesto em forma de carta</b> ao governo, exigindo o <b>fim dos castigos corporais</b> e a <b>anistia</b> (o perdão depois da revolta). Se não fossem atendidos, bombardeariam o <b>Rio de Janeiro</b>, que era a <b>capital</b> do país. O governo <b>aceitou</b> as exigências — mas dias depois prendeu os líderes, condenou alguns a trabalho forçado, <b>expulsou cerca de 2 mil marinheiros</b> e dezenas foram mortos. João Cândido ficou preso e foi libertado dois anos depois.',
+ cai:'Pede as <b>duas exigências</b> (fim dos castigos + anistia) e o <b>final incompleto</b>: o governo aceitou e depois reprimiu. Cuidado: o bombardeio foi só uma <b>ameaça</b>.'},
+
+{id:'a14',un:'Un. 9',titulo:'🚌 Contra a segregação: Estados Unidos e África do Sul',
+ regra:'<b>Segregar</b> é <b>separar, isolar, afastar</b>. Alguns países mantiveram leis que separavam negros e brancos: pessoas negras eram impedidas de frequentar escolas, praças e banheiros reservados às brancas, de usar certos bebedouros e de ir a determinadas praias, restaurantes e clubes — e os lugares reservados a elas eram <b>precários</b>. <b>Ativista</b> é quem trabalha com muito empenho por uma causa.',
+ exemplo:'<b>Estados Unidos</b> (estados do sul tinham leis segregacionistas): em <b>1º de dezembro de 1955</b>, em <b>Montgomery</b>, <b>Rosa Parks</b> (costureira, nascida em 1913 no Alabama) <b>recusou-se a ceder seu lugar</b> no ônibus a um passageiro branco quando o motorista mudou a placa <i>colored</i>, e foi <b>presa</b>. <b>Martin Luther King</b>, pastor da Igreja Batista, defendia a <b>desobediência civil</b> (lutar sem violência, desobedecendo a leis que violam os direitos humanos): <b>três dias depois</b>, organizou um <b>boicote</b> aos ônibus da cidade, até a lei de segregação ser declarada <b>inconstitucional</b>. Ganhou o <b>Nobel da Paz em 1964</b>.<br><br><b>África do Sul</b>: o <b>apartheid</b> — palavra que significa <b>“separação”</b> — foi criado em <b>1948</b> por um governo formado só por brancos. <b>Nelson Mandela</b>, advogado, lutou contra ele: foi <b>preso em 1962</b> e condenado à prisão perpétua, passou <b>27 anos</b> na cadeia, foi <b>solto em 1990</b>, atuou como <b>mediador</b>, ganhou o <b>Nobel da Paz em 1993</b> e no ano seguinte foi eleito o <b>primeiro presidente negro</b> do país.',
+ cai:'A prova troca os papéis: <b>Rosa Parks não cedeu o lugar</b>; <b>Luther King organizou o boicote</b>; <b>Mandela é da África do Sul</b> (apartheid). O que os três têm em comum: lutaram contra a <b>segregação racial</b>. Também pede o significado de <b>segregar</b>, <b>boicote</b>, <b>anistia</b> e <b>apartheid</b>.'},
+
+{id:'a15',un:'Un. 10',titulo:'📘 As Constituições do Brasil: 1824 e 1988',
+ regra:'Uma <b>Constituição</b> é o <b>conjunto de leis maiores</b> de um país: define a <b>forma de governo</b>, a <b>organização e a divisão dos poderes</b> e os <b>direitos e deveres dos cidadãos</b>. Um <b>regime autoritário</b> dá pouca participação política ao povo e usa <b>repressão e censura</b>; um <b>regime democrático</b> garante os direitos <b>civis, políticos e sociais</b> (votar, expressar-se, reivindicar).',
+ exemplo:'<b>1824 — a primeira</b>: <b>outorgada</b> (imposta pela vontade de uma pessoa) por <b>D. Pedro I</b>, dois anos depois da independência. Atendia à <b>elite</b>, <b>manteve a escravidão</b> e excluía a maioria da população. Criou o <b>Poder Moderador</b>, exercido <b>só pelo imperador</b>, que podia <b>interferir</b> no Executivo, no Legislativo e no Judiciário. Votavam apenas <b>homens livres, com mais de 25 anos e renda anual alta</b>. Em <b>1831</b>, D. Pedro I voltou a Portugal e deixou o filho de 5 anos como herdeiro.<br><br>Entre <b>1964 e 1985</b> o Brasil foi governado pelos <b>militares</b>, com autoritarismo, repressão e censura. O movimento <b>Diretas Já</b>, nos anos 1980, pedia a volta da democracia e o <b>direito de eleger o presidente</b>. A pressão popular acabou com o regime militar, mas houve uma <b>eleição indireta</b>: elegeu <b>Tancredo Neves</b>, que adoeceu e faleceu antes de governar; assumiu o vice, <b>José Sarney</b>.<br><br><b>1988 — a Constituição Cidadã</b>: elaborada por uma <b>Assembleia Nacional Constituinte</b> e promulgada em <b>5 de outubro de 1988</b>; foi a <b>primeira vez</b> que uma Constituição ampliou os direitos <b>sem nenhuma forma de exclusão</b>. Garantiu o <b>voto universal</b> (todos os brasileiros <b>maiores de 16 anos</b>, inclusive os <b>analfabetos</b>) e incluiu os direitos dos <b>indígenas</b> e das comunidades <b>quilombolas</b>. Define o Brasil como <b>República Presidencialista</b>, com <b>eleições diretas</b> e três poderes divididos e independentes: <b>Executivo, Legislativo e Judiciário</b>. Antes dela o Brasil teve outras <b>seis</b> Constituições. Urnas eletrônicas desde <b>1996</b>; <b>biometria</b> a partir de 2020.',
+ cai:'Compara as duas: <b>outorgada × Assembleia Constituinte</b>, <b>Poder Moderador (1824) × três poderes (1988)</b>, <b>voto de +25 anos com renda alta × voto universal aos 16</b>. Atenção: o Poder Moderador <b>não existe</b> hoje.'}
+];
+
+/* ===================== DADOS: PRIMEIRO PULO (TERMÔMETRO) ===================== */
+var TERMOMETRO=[
+{a:'a1',q:'Por que o ano, no Egito Antigo, tinha três estações em vez de quatro?',
+ o:[{t:'Porque fazia muito calor o ano todo e era difícil separar as quatro estações',c:true},
+    {t:'Porque o ano egípcio tinha somente três meses',c:false},
+    {t:'Porque eles copiaram o calendário dos maias',c:false},
+    {t:'Porque o rio Nilo enchia três vezes por mês',c:false}],
+ e:'Como fazia calor o ano inteiro, os egípcios dividiram o ano pelas mudanças do Nilo: inundação, semeadura e colheita.'},
+
+{a:'a2',q:'Qual é o marco inicial (o começo da contagem) do calendário gregoriano, que usamos hoje?',
+ o:[{t:'O nascimento de Cristo (ano 1)',c:true},
+    {t:'A Hégira, a migração do profeta Maomé',c:false},
+    {t:'O êxodo dos judeus escravizados no Egito',c:false},
+    {t:'A fundação de Roma, em 753 a.C.',c:false}],
+ e:'Gregoriano = nascimento de Cristo. A Hégira é do calendário islâmico e o êxodo, do judaico.'},
+
+{a:'a3',q:'Quem criou o calendário juliano, em 46 a.C.?',
+ o:[{t:'Júlio César',c:true},
+    {t:'Rômulo',c:false},
+    {t:'O papa Gregório XIII',c:false},
+    {t:'Numa Pompílio',c:false}],
+ e:'Rômulo fez o romano (753 a.C.), Numa Pompílio acrescentou janeiro e fevereiro, Júlio César fez o juliano (46 a.C.) e o papa Gregório XIII, o gregoriano (1582).'},
+
+{a:'a4',q:'Como era formado o calendário maia Haab?',
+ o:[{t:'18 meses de 20 dias mais 5 dias no fim, completando 365',c:true},
+    {t:'12 meses de 30 dias, completando 360',c:false},
+    {t:'13 meses de 28 dias',c:false},
+    {t:'10 meses de 36 dias e meio',c:false}],
+ e:'Haab: 18 × 20 = 360, mais os 5 dias do Wayeb = 365 dias.'},
+
+{a:'a5',q:'Para os povos Tupi-Guarani, qual constelação marca o inverno?',
+ o:[{t:'A Ema',c:true},
+    {t:'A Anta do Norte',c:false},
+    {t:'O Homem Velho',c:false},
+    {t:'O Cervo (ou Veado)',c:false}],
+ e:'Ema = inverno (junho); Anta do Norte = primavera; Homem Velho = verão; Cervo = outono.'},
+
+{a:'a6',q:'O direito à educação, à saúde e à moradia faz parte de qual grupo de direitos?',
+ o:[{t:'Dos direitos sociais',c:true},
+    {t:'Dos direitos civis',c:false},
+    {t:'Dos direitos políticos',c:false},
+    {t:'Dos deveres do cidadão',c:false}],
+ e:'Sociais: educação, saúde, moradia, trabalho e lazer. Civis são as liberdades; políticos são votar e eleger-se.'},
+
+{a:'a7',q:'Na Atenas antiga, quem podia ser cidadão?',
+ o:[{t:'Só os homens livres nascidos em Atenas',c:true},
+    {t:'Todas as pessoas que moravam na cidade',c:false},
+    {t:'As mulheres e os estrangeiros, mas não os homens',c:false},
+    {t:'Somente os escravizados libertados',c:false}],
+ e:'Ficavam de fora as mulheres, os estrangeiros (metecos) e os escravizados.'},
+
+{a:'a8',q:'Na sociedade romana, qual grupo era considerado cidadão e podia ocupar cargos como o Senado?',
+ o:[{t:'Os patrícios',c:true},
+    {t:'Os plebeus',c:false},
+    {t:'Os clientes',c:false},
+    {t:'Os escravizados',c:false}],
+ e:'Só os patrícios (as famílias nobres) eram cidadãos. Os plebeus eram o povo (populus).'},
+
+{a:'a9',q:'O que aconteceu em 1948?',
+ o:[{t:'A ONU estabeleceu a Declaração Universal dos Direitos Humanos, com 30 artigos',c:true},
+    {t:'Os 50 países assinaram a Carta das Nações Unidas',c:false},
+    {t:'A princesa Isabel assinou a Lei Áurea',c:false},
+    {t:'Foi promulgada a Constituição Cidadã',c:false}],
+ e:'1945 = Carta das Nações Unidas (criação da ONU). 1948 = Declaração Universal dos Direitos Humanos.'},
+
+{a:'a10',q:'Qual destes é um exemplo de pressão externa pelo fim da escravidão no Brasil?',
+ o:[{t:'O interesse da Inglaterra em vender seus produtos industrializados a trabalhadores assalariados',c:true},
+    {t:'A resistência dos próprios escravizados',c:false},
+    {t:'A campanha dos jornais abolicionistas brasileiros',c:false},
+    {t:'A fundação da Confederação Abolicionista',c:false}],
+ e:'Externa = vinha de fora do Brasil (a Inglaterra). As outras três eram pressões internas.'},
+
+{a:'a11',q:'O que a Lei Eusébio de Queirós, de 1850, proibiu?',
+ o:[{t:'O tráfico negreiro — mas a escravidão continuou',c:true},
+    {t:'Toda a escravidão no Brasil',c:false},
+    {t:'Os castigos com chibata na Marinha',c:false},
+    {t:'O trabalho das crianças nascidas de escravizadas',c:false}],
+ e:'Ela proibiu só o tráfico. A escravidão acabou em 1888, com a Lei Áurea.'},
+
+{a:'a12',q:'Quem proclamou a República, em 15 de novembro de 1889, e se tornou o primeiro presidente do Brasil?',
+ o:[{t:'O marechal Deodoro da Fonseca',c:true},
+    {t:'A princesa Isabel',c:false},
+    {t:'D. Pedro I',c:false},
+    {t:'O marinheiro João Cândido',c:false}],
+ e:'Deodoro da Fonseca, com apoio de tropas do Exército. A princesa Isabel assinou a Lei Áurea, em 1888.'},
+
+{a:'a13',q:'O que os marinheiros exigiram na Revolta da Chibata, em 1910?',
+ o:[{t:'O fim dos castigos corporais e a anistia para quem participou',c:true},
+    {t:'A proclamação da República',c:false},
+    {t:'Navios mais modernos, importados da Inglaterra',c:false},
+    {t:'O direito de voto para os analfabetos',c:false}],
+ e:'As duas exigências do manifesto: fim dos castigos corporais e anistia.'},
+
+{a:'a14',q:'O que significa a palavra apartheid?',
+ o:[{t:'“Separação”',c:true},
+    {t:'“Liberdade”',c:false},
+    {t:'“Perdão depois da revolta”',c:false},
+    {t:'“Coisa pública”',c:false}],
+ e:'Apartheid = separação: as leis que separavam negros e brancos na África do Sul, criadas em 1948.'},
+
+{a:'a15',q:'O Poder Moderador, que permitia ao imperador interferir nos outros três poderes, foi criado em qual Constituição?',
+ o:[{t:'Na de 1824, outorgada por D. Pedro I',c:true},
+    {t:'Na de 1988, a Constituição Cidadã',c:false},
+    {t:'Na Carta das Nações Unidas, de 1945',c:false},
+    {t:'Na Declaração Universal dos Direitos Humanos',c:false}],
+ e:'Era da Constituição de 1824. Hoje são três poderes: Executivo, Legislativo e Judiciário.'}
+];
+/* ===================== DADOS: PISOU NA LINHA (16 CARTÕES) ===================== */
+var PEGADINHAS=[
+ {f:'“O ano no Egito tinha quatro estações, como o nosso.”',t:'❌ Tinha <b>três</b>: inundação, semeadura e colheita. Motivo: fazia <b>calor o ano todo</b>, e era difícil separar as quatro.'},
+ {f:'“Na inundação a água do Nilo ficava esverdeada.”',t:'❌ Ao contrário: na <b>inundação</b> (jul–out) ela ficava <b>avermelhada</b>; na <b>colheita</b> (mar–jun), <b>esverdeada</b>.'},
+ {f:'“O calendário solar é o mais antigo de todos.”',t:'❌ O mais antigo é o <b>lunar</b> (baseado nas fases da Lua). O solar segue o Sol e o lunissolar mistura os dois.'},
+ {f:'“O calendário islâmico começa no nascimento de Cristo.”',t:'❌ Começa na <b>Hégira</b> (ano 622). <b>Nascimento de Cristo</b> = gregoriano. <b>Êxodo</b> = judaico.'},
+ {f:'“O papa Gregório XIII criou o nosso calendário inteiro, de uma vez.”',t:'❌ Foram <b>séculos e quatro etapas</b>: Rômulo (753 a.C.) → Numa Pompílio (janeiro e fevereiro) → Júlio César, o juliano (46 a.C.) → papa Gregório XIII, o gregoriano (1582).'},
+ {f:'“O calendário maia Haab tinha 12 meses de 30 dias.”',t:'❌ Tinha <b>18 meses de 20 dias</b> (360) <b>+ 5 dias</b> (o Wayeb) = <b>365</b>.'},
+ {f:'“A constelação da Anta do Norte marca o inverno.”',t:'❌ Anta do Norte = <b>primavera</b>. <b>Ema = inverno</b>; Homem Velho = verão; Cervo = outono.'},
+ {f:'“Em Atenas, todas as pessoas da cidade eram cidadãs.”',t:'❌ Só os <b>homens livres nascidos em Atenas</b>. Ficavam de fora <b>mulheres</b>, <b>estrangeiros (metecos)</b> e <b>escravizados</b>.'},
+ {f:'“O Brasil tem democracia direta, como Atenas.”',t:'❌ O Brasil tem democracia <b>representativa</b> (elegemos representantes). A <b>direta</b>, em que os próprios cidadãos decidem na Assembleia, era de <b>Atenas</b>.'},
+ {f:'“Em Roma, os plebeus eram os cidadãos.”',t:'❌ Só os <b>patrícios</b> eram cidadãos e iam ao Senado. Os <b>plebeus</b> eram o povo (<i>populus</i>) e conquistaram direitos servindo na <b>legião</b>.'},
+ {f:'“A Declaração Universal dos Direitos Humanos foi assinada em 1945.”',t:'❌ Em <b>1945</b> foi a <b>Carta das Nações Unidas</b> (criou a ONU). A <b>Declaração</b>, com <b>30 artigos</b>, é de <b>1948</b>.'},
+ {f:'“A Lei Eusébio de Queirós, de 1850, acabou com a escravidão.”',t:'❌ Proibiu apenas o <b>tráfico negreiro</b>. A escravidão continuou — e o comércio <b>interno</b> ficou mais <b>intenso e caro</b>. O fim veio em <b>1888</b>.'},
+ {f:'“Pela Lei do Ventre Livre, a criança saía livre e ia embora na mesma hora.”',t:'❌ Era livre <b>no papel</b>: ficava sob o senhor da mãe até os <b>8 anos</b> e podia ter de servir até os <b>21</b>.'},
+ {f:'“A Lei dos Sexagenários libertou a maioria dos escravizados.”',t:'❌ Libertou <b>pouquíssimos</b>: por causa dos maus-tratos, poucos chegavam aos <b>60 anos</b> — e ainda deviam <b>3 anos</b> de trabalho.'},
+ {f:'“Quem proclamou a República foi a princesa Isabel.”',t:'❌ A princesa Isabel assinou a <b>Lei Áurea (1888)</b>. A <b>República</b> foi proclamada por <b>Deodoro da Fonseca</b> em <b>15/11/1889</b>.'},
+ {f:'“Rosa Parks organizou o boicote aos ônibus, e o Poder Moderador existe até hoje.”',t:'❌ Duas linhas numa só! <b>Rosa Parks</b> recusou-se a ceder o lugar; o <b>boicote</b> foi organizado por <b>Martin Luther King</b>. E o <b>Poder Moderador</b> era de <b>1824</b>: hoje são <b>três</b> poderes (Executivo, Legislativo e Judiciário).'}
+];
+
+/* ===================== DADOS: PULA-PULA (banco de 30) ===================== */
+var PULAPULA=[
+ {p:'A Carta das Nações Unidas, que criou a ONU, é de…',o:['1945','1948'],c:0,e:'1945 = Carta das Nações Unidas. 1948 = Declaração Universal.'},
+ {p:'A Declaração Universal dos Direitos Humanos, com 30 artigos, é de…',o:['1948','1945'],c:0,e:'A Declaração é de 1948, três anos depois da Carta.'},
+ {p:'Na estação da inundação, a água do Nilo ficava…',o:['avermelhada','esverdeada'],c:0,e:'Inundação = avermelhada; colheita = esverdeada.'},
+ {p:'Na estação da colheita, a água do Nilo ficava…',o:['esverdeada','avermelhada'],c:0,e:'Colheita (mar–jun) = esverdeada.'},
+ {p:'O tipo de calendário mais antigo é o…',o:['lunar','solar'],c:0,e:'O lunar, baseado nas fases da Lua.'},
+ {p:'O marco inicial do calendário islâmico é…',o:['a Hégira','o êxodo'],c:0,e:'Hégira: a migração de Maomé de Meca para Medina, em 622.'},
+ {p:'O marco inicial do calendário judaico é…',o:['o êxodo','o nascimento de Cristo'],c:0,e:'O êxodo: a saída dos judeus escravizados no Egito.'},
+ {p:'Quem criou o calendário juliano, em 46 a.C.?',o:['Júlio César','o papa Gregório XIII'],c:0,e:'Júlio César. O gregoriano é de 1582, do papa Gregório XIII.'},
+ {p:'Quem acrescentou janeiro e fevereiro ao calendário romano?',o:['Numa Pompílio','Rômulo'],c:0,e:'Rômulo criou o calendário (753 a.C.); Numa Pompílio acrescentou os dois meses.'},
+ {p:'O calendário Haab, dos maias, tinha…',o:['18 meses de 20 dias + 5','12 meses de 30 dias'],c:0,e:'18 × 20 = 360, + 5 dias do Wayeb = 365.'},
+ {p:'A constelação da Ema marca o…',o:['inverno','verão'],c:0,e:'Ema = inverno (2ª quinzena de junho).'},
+ {p:'A constelação do Homem Velho marca o…',o:['verão','outono'],c:0,e:'Homem Velho = verão (2ª quinzena de dezembro).'},
+ {p:'A constelação da Anta do Norte marca a…',o:['primavera','inverno'],c:0,e:'Anta do Norte = primavera (2ª quinzena de setembro).'},
+ {p:'Votar e eleger-se são direitos…',o:['políticos','sociais'],c:0,e:'Políticos. Sociais são educação, saúde, moradia, trabalho e lazer.'},
+ {p:'Liberdade de ir e vir e de religião são direitos…',o:['civis','políticos'],c:0,e:'Civis: as liberdades da pessoa.'},
+ {p:'Educação, saúde e moradia são direitos…',o:['sociais','civis'],c:0,e:'Sociais.'},
+ {p:'A democracia em que os próprios cidadãos decidem na Assembleia é a…',o:['direta (Atenas)','representativa (Brasil)'],c:0,e:'Direta, de Atenas. No Brasil elegemos representantes.'},
+ {p:'Em Roma, o grupo que era cidadão e ia ao Senado era o dos…',o:['patrícios','plebeus'],c:0,e:'Só os patrícios eram cidadãos.'},
+ {p:'A palavra “república” significa…',o:['“coisa pública”','“separação”'],c:0,e:'“Coisa pública”. “Separação” é o significado de apartheid.'},
+ {p:'A palavra “apartheid” significa…',o:['“separação”','“perdão”'],c:0,e:'Separação. Perdão depois de uma revolta é a anistia.'},
+ {p:'A Lei Eusébio de Queirós (1850) proibiu…',o:['o tráfico negreiro','toda a escravidão'],c:0,e:'Só o tráfico. A escravidão acabou em 1888.'},
+ {p:'A lei que libertava quem tivesse mais de 60 anos é a dos…',o:['Sexagenários (1885)','Ventre Livre (1871)'],c:0,e:'SEXAgenários lembra SESSENTA.'},
+ {p:'A Lei do Ventre Livre, de 1871, tratava…',o:['das crianças nascidas de escravizadas','dos maiores de 60 anos'],c:0,e:'Ventre = barriga da mãe: as crianças nasciam livres (com condições).'},
+ {p:'Quem assinou a Lei Áurea, em 1888?',o:['a princesa Isabel','Deodoro da Fonseca'],c:0,e:'A princesa Isabel. Deodoro proclamou a República em 1889.'},
+ {p:'Em 1884, a escravidão acabou em…',o:['Ceará, Amazonas e Rio Grande do Sul','Bahia, Maranhão e Piauí'],c:0,e:'Ceará (três anos de luta dos jangadeiros), Amazonas e Rio Grande do Sul.'},
+ {p:'Quem liderou a Revolta da Chibata, em 1910?',o:['João Cândido','José do Patrocínio'],c:0,e:'O marinheiro João Cândido. José do Patrocínio era jornalista abolicionista.'},
+ {p:'Quem recusou-se a ceder o lugar no ônibus, em 1955?',o:['Rosa Parks','Martin Luther King'],c:0,e:'Rosa Parks. King organizou o boicote três dias depois.'},
+ {p:'Quem lutou contra o apartheid na África do Sul?',o:['Nelson Mandela','Martin Luther King'],c:0,e:'Mandela, na África do Sul. King lutou nos Estados Unidos.'},
+ {p:'O Poder Moderador foi criado na Constituição de…',o:['1824','1988'],c:0,e:'1824, outorgada por D. Pedro I. Hoje são três poderes.'},
+ {p:'O voto universal a partir dos 16 anos veio com a Constituição de…',o:['1988','1824'],c:0,e:'1988, a Constituição Cidadã. Em 1824 votavam só homens livres de +25 anos com renda alta.'}
+];
+
+/* ===================== DADOS: PÁTIO DO TREINO (28 em 7 famílias) ===================== */
+var TREINO=[
+{nome:'Família 1 — Calendários: tipos, marcos e a linha do tempo do nosso',assuntos:['a2','a3'],qs:[
+ {n:'f',q:'O calendário baseado no movimento da Terra ao redor do Sol é o…',o:[{t:'solar',c:true},{t:'lunar',c:false},{t:'lunissolar',c:false},{t:'maia',c:false}],e:'Solar = baseado no Sol. Lunar = na Lua. Lunissolar = os dois juntos.'},
+ {n:'f',q:'O marco inicial do calendário judaico é…',o:[{t:'o êxodo dos judeus escravizados no Egito',c:true},{t:'o nascimento de Cristo',c:false},{t:'a Hégira',c:false},{t:'a fundação de Roma',c:false}],e:'Judaico (lunissolar) = êxodo; gregoriano = nascimento de Cristo; islâmico = Hégira.'},
+ {n:'m',q:'Coloque na ordem certa as etapas do calendário que usamos hoje:',o:[{t:'calendário romano (Rômulo) → janeiro e fevereiro (Numa Pompílio) → juliano (Júlio César) → gregoriano (papa Gregório XIII)',c:true},{t:'juliano → romano → gregoriano → janeiro e fevereiro',c:false},{t:'gregoriano → juliano → romano → janeiro e fevereiro',c:false},{t:'romano → gregoriano → juliano → janeiro e fevereiro',c:false}],e:'753 a.C. (Rômulo) → Numa Pompílio → 46 a.C. (juliano) → 1582 (gregoriano).'},
+ {n:'m',q:'Os meses de julho e agosto receberam esses nomes em homenagem a…',o:[{t:'Júlio César e César Augusto',c:true},{t:'Rômulo e Numa Pompílio',c:false},{t:'dois papas de Roma',c:false},{t:'dois faraós do Egito',c:false}],e:'Julho = Júlio César; agosto = César Augusto.'},
+ {n:'p',q:'Um colega afirma: “o calendário que usamos hoje foi criado todo de uma vez, em 1582”. A resposta certa é:',o:[{t:'ele está errado — o calendário foi mudando ao longo de séculos, e em 1582 houve apenas a última etapa, o gregoriano',c:true},{t:'ele está certo — antes de 1582 não existia calendário nenhum',c:false},{t:'ele está certo — o papa Gregório XIII criou tudo sozinho',c:false},{t:'ele está errado — na verdade nada mudou desde Rômulo',c:false}],e:'Foram quatro etapas, do calendário romano ao gregoriano.'}
+]},
+
+{nome:'Família 2 — Egito: o Nilo e as três estações',assuntos:['a1'],qs:[
+ {n:'f',q:'Quantos dias tinha o calendário egípcio, e em quantas estações o ano era dividido?',o:[{t:'365 dias, divididos em 3 estações de 4 meses',c:true},{t:'365 dias, divididos em 4 estações de 3 meses',c:false},{t:'360 dias, divididos em 18 meses',c:false},{t:'304 dias, divididos em 10 meses',c:false}],e:'Calendário solar de 365 dias e três estações de quatro meses cada.'},
+ {n:'m',q:'A estação da semeadura ia de novembro a fevereiro. O que acontecia nela?',o:[{t:'a cheia terminava, as terras ficavam férteis e plantavam papiro, linho, cevada e trigo',c:true},{t:'o rio enchia e a água ficava avermelhada',c:false},{t:'recolhiam os produtos e a água ficava esverdeada',c:false},{t:'a estrela Sírio aparecia e começava o ano-novo',c:false}],e:'Semeadura = plantar, depois da cheia. A estrela Sírio marcava o começo da inundação.'},
+ {n:'p',q:'Leia: “A água do rio voltou a baixar e já está esverdeada; é hora de recolher o que plantamos.” O texto fala da estação da…',o:[{t:'colheita (março a junho)',c:true},{t:'inundação (julho a outubro)',c:false},{t:'semeadura (novembro a fevereiro)',c:false},{t:'primavera, que no Egito durava quatro meses',c:false}],e:'Água esverdeada + recolher os produtos = colheita (mar–jun).'}
+]},
+
+{nome:'Família 3 — Os maias e o céu dos povos indígenas',assuntos:['a4','a5'],qs:[
+ {n:'f',q:'Uma constelação é…',o:[{t:'um conjunto de estrelas que formam uma figura no céu',c:true},{t:'um calendário escrito em pedra',c:false},{t:'o nome de cada mês do calendário maia',c:false},{t:'um tipo de nuvem que anuncia a chuva',c:false}],e:'Conjuntos de estrelas que formam figuras. Os indígenas as usavam para marcar as estações.'},
+ {n:'f',q:'Faça a conta do calendário Haab: 18 meses de 20 dias, mais 5 dias do Wayeb. Quantos dias dá?',o:[{t:'365 dias',c:true},{t:'360 dias',c:false},{t:'385 dias',c:false},{t:'354 dias',c:false}],e:'18 × 20 = 360; 360 + 5 = 365.'},
+ {n:'m',q:'Na astronomia indígena, a observação do céu estava ligada principalmente a…',o:[{t:'fenômenos da natureza, como os períodos de chuva, seca, calor e frio',c:true},{t:'descobrir onde havia ouro',c:false},{t:'prever eclipses do Sol',c:false},{t:'saber a hora exata do dia',c:false}],e:'O céu avisava as mudanças da natureza e, com isso, as estações.'},
+ {n:'p',q:'É a segunda quinzena de dezembro e aparece no céu a constelação que os Tupi-Guarani usavam como marco. Que estação está chegando, e qual é a constelação?',o:[{t:'o verão, com a constelação do Homem Velho',c:true},{t:'o inverno, com a constelação da Ema',c:false},{t:'a primavera, com a constelação da Anta do Norte',c:false},{t:'o outono, com a constelação do Cervo',c:false}],e:'Dezembro → verão → Homem Velho. Junho → inverno → Ema.'}
+]},
+
+{nome:'Família 4 — Cidadania: Atenas, Roma e os três tipos de direito',assuntos:['a6','a7','a8'],qs:[
+ {n:'f',q:'Cidadania é…',o:[{t:'o conjunto de direitos e deveres de uma pessoa em relação ao Estado onde vive',c:true},{t:'apenas o direito de votar',c:false},{t:'o dever de pagar impostos, e nada mais',c:false},{t:'morar numa cidade grande',c:false}],e:'Direitos (civis, políticos e sociais) e também deveres.'},
+ {n:'f',q:'Em que cidade e em que povo surgiram as primeiras ideias de cidadania, há mais de 2500 anos?',o:[{t:'em Atenas, na Grécia Antiga',c:true},{t:'em Roma, entre os etruscos',c:false},{t:'no Egito, às margens do Nilo',c:false},{t:'entre os maias, na América',c:false}],e:'Atenas, onde nasceu a democracia.'},
+ {n:'m',q:'Em Atenas, três grupos NÃO podiam ser cidadãos. Quais?',o:[{t:'as mulheres, os estrangeiros (metecos) e os escravizados',c:true},{t:'os homens livres, os patrícios e os plebeus',c:false},{t:'os clientes, os legionários e os senadores',c:false},{t:'as crianças, os idosos e os estrangeiros',c:false}],e:'Só eram cidadãos os homens livres nascidos em Atenas.'},
+ {n:'m',q:'Como os plebeus romanos começaram a conquistar participação política?',o:[{t:'servindo no exército (a legião) durante as guerras e, em troca, exigindo mais participação dos patrícios',c:true},{t:'comprando o título de patrício com o dinheiro do comércio',c:false},{t:'prestando serviços aos patrícios em troca de proteção',c:false},{t:'votando na Assembleia, como em Atenas',c:false}],e:'Quem prestava serviços em troca de proteção eram os clientes — outro grupo.'},
+ {n:'p',q:'Uma turma precisa decidir o tema da festa. Na opção A, todos os alunos votam e decidem juntos; na opção B, cada sala elege um representante, e os representantes decidem. As opções A e B lembram, respectivamente:',o:[{t:'a democracia direta de Atenas e a democracia representativa do Brasil',c:true},{t:'a democracia representativa do Brasil e a democracia direta de Atenas',c:false},{t:'a república romana e a monarquia brasileira',c:false},{t:'o regime autoritário e o Poder Moderador',c:false}],e:'Direta = os próprios cidadãos decidem (Atenas). Representativa = elegemos quem decide (Brasil).'}
+]},
+
+{nome:'Família 5 — Direitos humanos: a ONU e a Declaração',assuntos:['a9'],qs:[
+ {n:'f',q:'O que foi assinado em 26 de junho de 1945, na Conferência de São Francisco?',o:[{t:'a Carta das Nações Unidas, marco da criação da ONU',c:true},{t:'a Declaração Universal dos Direitos Humanos',c:false},{t:'a Lei Áurea',c:false},{t:'a Constituição Cidadã',c:false}],e:'1945 = Carta das Nações Unidas; 1948 = Declaração Universal.'},
+ {n:'m',q:'Quando o livro diz que os direitos humanos são “universais”, isso quer dizer que eles…',o:[{t:'valem para todas as pessoas, em todo o mundo',c:true},{t:'valem só no país onde a pessoa nasceu',c:false},{t:'valem só para quem estuda numa universidade',c:false},{t:'valem só para os 50 países que assinaram a Carta',c:false}],e:'Universal = para todas as pessoas, sem exceção.'},
+ {n:'p',q:'Uma família que chega de outro país, com outra religião, matricula a filha na escola. Segundo a Declaração Universal, essa criança…',o:[{t:'tem os mesmos direitos das outras, inclusive o direito à educação, porque os direitos humanos valem para toda pessoa',c:true},{t:'só terá direitos quando tiver a nacionalidade brasileira',c:false},{t:'terá direitos apenas se o país de origem tiver assinado a Carta das Nações Unidas',c:false},{t:'terá direitos somente quando for adulta e trabalhar',c:false}],e:'Nem origem, nem nacionalidade, nem religião, nem idade mudam os direitos humanos.'}
+]},
+
+{nome:'Família 6 — O fim da escravidão: abolicionistas e as leis',assuntos:['a10','a11'],qs:[
+ {n:'f',q:'Um movimento abolicionista era um movimento que lutava…',o:[{t:'pela extinção (o fim) da escravidão',c:true},{t:'pela volta da monarquia',c:false},{t:'pelo fim dos castigos na Marinha',c:false},{t:'pela criação da ONU',c:false}],e:'Abolir = acabar com algo. Os movimentos queriam o fim da escravidão.'},
+ {n:'f',q:'Qual era a profissão com que José do Patrocínio fez sua luta abolicionista?',o:[{t:'o jornalismo — fundou o jornal A Cidade do Rio e a Confederação Abolicionista',c:true},{t:'a farmácia, em que trabalhou toda a vida',c:false},{t:'a advocacia, defendendo escravizados nos tribunais',c:false},{t:'a Marinha, como marinheiro',c:false}],e:'Ele se formou em Farmácia, mas se dedicou ao jornalismo.'},
+ {n:'m',q:'Depois da proibição do tráfico negreiro, em 1850, o comércio interno de escravizados no Brasil…',o:[{t:'ficou ainda mais intenso e mais caro',c:true},{t:'acabou no mesmo ano',c:false},{t:'ficou muito mais barato',c:false},{t:'passou a ser controlado pela Inglaterra',c:false}],e:'Como não chegavam mais africanos pelo tráfico, o comércio dentro do país cresceu e encareceu.'},
+ {n:'p',q:'Leia: “A lei parecia libertar, mas quase ninguém conseguia usá-la — e quem conseguia ainda devia três anos de trabalho e acabava abandonado na velhice.” O texto fala da:',o:[{t:'Lei dos Sexagenários, de 1885',c:true},{t:'Lei do Ventre Livre, de 1871',c:false},{t:'Lei Eusébio de Queirós, de 1850',c:false},{t:'Lei Áurea, de 1888',c:false}],e:'Por causa dos maus-tratos, poucos chegavam aos 60 anos.'}
+]},
+
+{nome:'Família 7 — Lutas por direitos e as Constituições do Brasil',assuntos:['a12','a13','a14','a15'],qs:[
+ {n:'f',q:'Uma Constituição é…',o:[{t:'o conjunto de leis maiores de um país',c:true},{t:'a lista dos candidatos de uma eleição',c:false},{t:'um acordo assinado entre vários países',c:false},{t:'o jornal oficial do governo',c:false}],e:'Define a forma de governo, a divisão dos poderes e os direitos e deveres dos cidadãos.'},
+ {n:'m',q:'Por que os grandes fazendeiros escravocratas deixaram de apoiar a monarquia, pouco antes de 1889?',o:[{t:'porque perderam sua principal mão de obra com o fim da escravidão, em 1888',c:true},{t:'porque queriam o voto a partir dos 16 anos',c:false},{t:'porque a Inglaterra proibiu a venda de café',c:false},{t:'porque o imperador acabou com o Poder Moderador',c:false}],e:'Sem o apoio deles, Deodoro da Fonseca proclamou a República em 15/11/1889.'},
+ {n:'m',q:'O que mostra que a vitória dos marinheiros na Revolta da Chibata foi incompleta?',o:[{t:'o governo aceitou as exigências, mas dias depois prendeu os líderes, expulsou cerca de 2 mil marinheiros e dezenas foram mortos',c:true},{t:'o governo recusou todas as exigências desde o começo',c:false},{t:'os marinheiros bombardearam o Rio de Janeiro e perderam o apoio do povo',c:false},{t:'os castigos corporais aumentaram logo depois da revolta',c:false}],e:'Os castigos foram suspensos, mas houve forte repressão. João Cândido ficou dois anos preso.'},
+ {n:'p',q:'Compare quem podia votar nas duas Constituições:',o:[{t:'1824: só homens livres, com mais de 25 anos e renda alta · 1988: todos os brasileiros maiores de 16 anos, inclusive os analfabetos',c:true},{t:'1824: todos os maiores de 16 anos · 1988: só quem tem renda alta',c:false},{t:'1824: homens e mulheres alfabetizados · 1988: só os militares',c:false},{t:'nas duas, apenas os homens livres maiores de 25 anos',c:false}],e:'É por isso que a de 1988 é chamada de Constituição Cidadã: ampliou direitos sem exclusão.'}
+]}
+];
+/* ===================== DADOS: CHEGAR NO CÉU (PROVA FINAL, 20) ===================== */
+var PROVA=[
+{a:'a1',q:'O calendário usado no Egito Antigo era do tipo solar, com 365 dias. Para que ele foi criado?',
+ o:[{t:'Para prever as cheias do rio Nilo e aproveitar a água, que deixava as terras férteis',c:true},
+    {t:'Para marcar as fases da Lua e as festas religiosas',c:false},
+    {t:'Para saber a hora exata do dia e da noite',c:false},
+    {t:'Para contar quantos anos tinha cada faraó',c:false}],
+ e:'O calendário solar egípcio servia para prever as cheias do Nilo e organizar a agricultura.'},
+
+{a:'a1',q:'A estação da inundação, no Egito, ia de julho a outubro e começava com um sinal no céu. Que sinal era esse?',
+ o:[{t:'O aparecimento da estrela Sírio, que marcava o ano-novo egípcio',c:true},
+    {t:'O aparecimento da constelação da Ema',c:false},
+    {t:'A primeira lua cheia depois do calor',c:false},
+    {t:'O desaparecimento do Sol por cinco dias',c:false}],
+ e:'A estrela Sírio anunciava a inundação e o ano-novo no Egito.'},
+
+{a:'a2',q:'Um calendário lunissolar mede o tempo…',
+ o:[{t:'pelas fases da Lua e também pelo movimento do Sol',c:true},
+    {t:'somente pelas fases da Lua',c:false},
+    {t:'somente pelo movimento do Sol',c:false},
+    {t:'apenas pelas constelações',c:false}],
+ e:'Lunissolar mistura os dois: Lua e Sol. O judaico é um exemplo.'},
+
+{a:'a3',q:'Quem criou o primeiro calendário romano, em 753 a.C., com 304 dias e 10 meses?',
+ o:[{t:'Rômulo',c:true},
+    {t:'Numa Pompílio',c:false},
+    {t:'Júlio César',c:false},
+    {t:'César Augusto',c:false}],
+ e:'Rômulo, em 753 a.C. Depois Numa Pompílio acrescentou janeiro e fevereiro.'},
+
+{a:'a4',q:'A contagem do calendário maia começava no ano zero, que corresponde a…',
+ o:[{t:'11 de agosto de 3114 a.C.',c:true},
+    {t:'753 a.C., a fundação de Roma',c:false},
+    {t:'o ano 1, o nascimento de Cristo',c:false},
+    {t:'o ano 622, a Hégira',c:false}],
+ e:'O ano zero maia é 11 de agosto de 3114 a.C.'},
+
+{a:'a5',q:'Para os povos Tupi-Guarani, a constelação do Cervo (ou Veado) marcava o…',
+ o:[{t:'outono',c:true},
+    {t:'inverno',c:false},
+    {t:'verão',c:false},
+    {t:'início da seca no Egito',c:false}],
+ e:'Cervo = outono (2ª quinzena de março). Ema = inverno; Anta do Norte = primavera; Homem Velho = verão.'},
+
+{a:'a6',q:'“Eu posso falar o que penso, escolher minha religião e ir e vir pela cidade.” Esses são exemplos de direitos…',
+ o:[{t:'civis',c:true},
+    {t:'políticos',c:false},
+    {t:'sociais',c:false},
+    {t:'universais do calendário',c:false}],
+ e:'Civis: liberdade de expressão, de pensamento, de religião, de ir e vir, direito à justiça e à propriedade.'},
+
+{a:'a6',q:'No Brasil, os direitos dos cidadãos estão garantidos principalmente pela…',
+ o:[{t:'Constituição Federal de 1988 e por estatutos, como o ECA',c:true},
+    {t:'Carta das Nações Unidas, de 1945',c:false},
+    {t:'Paideia, o sistema de educação dos gregos',c:false},
+    {t:'Assembleia de cidadãos de Atenas',c:false}],
+ e:'A Constituição de 1988 e os estatutos (como o Estatuto da Criança e do Adolescente).'},
+
+{a:'a7',q:'A Paideia, valorizada em Atenas, era…',
+ o:[{t:'a educação dos jovens: ginástica, música, leitura e escrita',c:true},
+    {t:'uma festa religiosa em homenagem aos deuses',c:false},
+    {t:'o imposto pago pelos estrangeiros',c:false},
+    {t:'a assembleia em que os cidadãos votavam',c:false}],
+ e:'Paideia era o sistema de educação que formava o cidadão ateniense.'},
+
+{a:'a8',q:'Em 509 a.C., Roma se tornou uma república. O que essa palavra significa, e o que isso quer dizer sobre o governo?',
+ o:[{t:'“Coisa pública”: o governo tem regras e é assunto de todos os cidadãos, não propriedade de uma só pessoa',c:true},
+    {t:'“Separação”: o governo mantinha os grupos separados',c:false},
+    {t:'“Perdão”: o governo perdoava quem se revoltasse',c:false},
+    {t:'“Legião”: só os militares podiam governar',c:false}],
+ e:'República = coisa pública: governo com regras e união entre os cidadãos.'},
+
+{a:'a9',q:'Qual destas afirmações sobre a Declaração Universal dos Direitos Humanos está correta?',
+ o:[{t:'Foi estabelecida pela ONU em 1948 e tem 30 artigos',c:true},
+    {t:'Foi assinada por 50 países em 1945, na Conferência de São Francisco',c:false},
+    {t:'Foi criada pela UNICEF em 1946, só para crianças',c:false},
+    {t:'Foi outorgada por D. Pedro I, em 1824',c:false}],
+ e:'1948, 30 artigos. Em 1945 foi a Carta das Nações Unidas; a UNICEF foi criada pela ONU em 1946.'},
+
+{a:'a9',q:'A Declaração Universal dos Direitos Humanos foi inspirada em outro documento. Qual?',
+ o:[{t:'A Declaração dos Direitos do Homem e do Cidadão, feita na França em 1789',c:true},
+    {t:'A primeira Constituição do Brasil, de 1824',c:false},
+    {t:'O manifesto dos marinheiros da Revolta da Chibata',c:false},
+    {t:'A Lei Áurea, de 1888',c:false}],
+ e:'França, 1789, na Revolução Francesa: liberdade, igualdade e fraternidade.'},
+
+{a:'a10',q:'Sobre as forças que levaram ao fim da escravidão no Brasil, é correto dizer que:',
+ o:[{t:'a pressão interna vinha dos abolicionistas e da resistência dos escravizados; a externa, do interesse da Inglaterra em vender produtos industrializados',c:true},
+    {t:'a pressão interna vinha da Inglaterra; a externa, dos abolicionistas brasileiros',c:false},
+    {t:'as duas pressões vinham da ONU e da Declaração Universal',c:false},
+    {t:'não houve pressão nenhuma: a princesa Isabel decidiu sozinha',c:false}],
+ e:'Interna = de dentro do Brasil; externa = de outro país. A Lei Áurea veio das duas pressões juntas.'},
+
+{a:'a11',q:'Qual sequência está na ordem certa, da mais antiga para a mais recente?',
+ o:[{t:'Lei Eusébio de Queirós → Lei do Ventre Livre → abolição no Ceará → Lei dos Sexagenários → Lei Áurea',c:true},
+    {t:'Lei do Ventre Livre → Lei Eusébio de Queirós → Lei Áurea → Lei dos Sexagenários → abolição no Ceará',c:false},
+    {t:'Lei Áurea → Lei dos Sexagenários → abolição no Ceará → Lei do Ventre Livre → Lei Eusébio de Queirós',c:false},
+    {t:'abolição no Ceará → Lei Eusébio de Queirós → Lei dos Sexagenários → Lei do Ventre Livre → Lei Áurea',c:false}],
+ e:'1850 → 1871 → 1884 → 1885 → 1888.'},
+
+{a:'a11',q:'No Ceará, a escravidão terminou em 1884. Quem participou dessa luta de três anos?',
+ o:[{t:'Jangadeiros, pescadores e trabalhadores negros livres e libertos',c:true},
+    {t:'Somente os grandes fazendeiros escravocratas',c:false},
+    {t:'Os marinheiros liderados por João Cândido',c:false},
+    {t:'Os deputados da Assembleia Nacional Constituinte',c:false}],
+ e:'No Amazonas e no Rio Grande do Sul, a abolição de 1884 veio de uma campanha popular e jornalística.'},
+
+{a:'a12',q:'Sobre a vida de muitos ex-escravizados nos primeiros anos da República, é correto afirmar que:',
+ o:[{t:'ficaram sem moradia, educação, saúde e trabalho assalariado, muitos foram morar em cortiços e a discriminação racial continuou',c:true},
+    {t:'receberam terras e salário do governo logo depois de 1888',c:false},
+    {t:'foram os preferidos dos industriais e comerciantes para os empregos',c:false},
+    {t:'passaram a ter imediatamente os mesmos direitos de todos',c:false}],
+ e:'Os patrões preferiram empregar imigrantes europeus: a liberdade chegou, mas a cidadania foi negada.'},
+
+{a:'a13',q:'Na Revolta da Chibata, os marinheiros ameaçaram bombardear o Rio de Janeiro. Por que essa ameaça era tão grave?',
+ o:[{t:'Porque o Rio de Janeiro era a capital do Brasil',c:true},
+    {t:'Porque lá ficava a sede da ONU',c:false},
+    {t:'Porque era a única cidade com navios de guerra',c:false},
+    {t:'Porque lá morava a princesa Isabel desde 1888',c:false}],
+ e:'Ameaçar a capital pressionava diretamente o governo. O bombardeio não aconteceu: era uma ameaça.'},
+
+{a:'a14',q:'Um grupo decide, sem violência, parar de usar um serviço de transporte para protestar contra uma lei injusta. Esse protesto se chama:',
+ o:[{t:'boicote',c:true},
+    {t:'anistia',c:false},
+    {t:'outorga',c:false},
+    {t:'segregação',c:false}],
+ e:'Boicote: evitar usar ou comprar um produto ou serviço. Foi o que Martin Luther King organizou em Montgomery.'},
+
+{a:'a14',q:'Assinale a alternativa correta sobre Nelson Mandela:',
+ o:[{t:'Era advogado, lutou contra o apartheid, passou 27 anos preso e foi o primeiro presidente negro da África do Sul',c:true},
+    {t:'Era pastor nos Estados Unidos e organizou o boicote aos ônibus',c:false},
+    {t:'Criou as leis do apartheid, em 1948',c:false},
+    {t:'Foi solto em 1962 e nunca mais participou da política',c:false}],
+ e:'Preso em 1962, solto em 1990, Nobel da Paz em 1993 e eleito presidente no ano seguinte.'},
+
+{a:'a15',q:'O movimento Diretas Já, dos anos 1980, reivindicava…',
+ o:[{t:'a volta da democracia, principalmente o direito de eleger o presidente',c:true},
+    {t:'a volta da monarquia e do Poder Moderador',c:false},
+    {t:'o fim do tráfico negreiro',c:false},
+    {t:'a criação da ONU e da UNICEF',c:false}],
+ e:'A pressão popular acabou com o regime militar, mas a eleição seguinte ainda foi indireta (Tancredo Neves e, depois, José Sarney).'}
+];
+/* ===================== MEMÓRIA (localStorage com prefixo próprio) ===================== */
+var PRE='hist5_rec3tri_';
+var CHAVE=PRE+'estado_v1';
+var COD_PAIS='PAIS-77';
+window.__mem=window.__mem||{};
+
+function gravar(obj){
+  var s=JSON.stringify(obj);
+  window.__mem[CHAVE]=s;
+  var onde='só nesta tela (o aparelho não deixou salvar)';
+  try{ localStorage.setItem(CHAVE,s); onde='salvo neste aparelho'; }catch(e){}
+  var el=document.getElementById('infoSalvar');
+  if(el) el.textContent='🖍️ '+onde+' · '+new Date().toLocaleTimeString('pt-BR').slice(0,5);
+}
+function carregar(){
+  var txt=null;
+  try{ txt=localStorage.getItem(CHAVE); }catch(e){}
+  if(txt===null) txt=window.__mem[CHAVE]||null;
+  if(!txt) return null;
+  try{ return JSON.parse(txt); }catch(e){ return null; }
+}
+function apagarSoDesteKit(){
+  window.__mem={};
+  try{
+    var remover=[];
+    for(var i=0;i<localStorage.length;i++){
+      var k=localStorage.key(i);
+      if(k && k.indexOf(PRE)===0) remover.push(k);
+    }
+    for(var j=0;j<remover.length;j++) localStorage.removeItem(remover[j]);
+  }catch(e){}
+}
+
+var S=carregar()||{};
+if(!S.term) S.term={sel:{},feito:false};
+if(!S.cards) S.cards={};
+if(!S.treino) S.treino={sel:{}};
+if(!S.prova) S.prova={sel:{},feito:false};
+if(!S.pp) S.pp={melhor:0,jogos:0};
+function salvar(){ gravar(S); }
+
+/* ===================== UTILIDADES ===================== */
+function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;var t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
+function embaralhar(arr,seed){var r=mulberry32(seed);var a=arr.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(r()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}return a;}
+var LETRAS=['A','B','C','D'];
+function el(id){return document.getElementById(id);}
+function pilulaPorId(id){for(var i=0;i<PILULAS.length;i++){if(PILULAS[i].id===id) return PILULAS[i];}return null;}
+function tituloCurto(id){var p=pilulaPorId(id);return p?p.titulo:id;}
+
+function abrirModal(html){ el('modalCx').innerHTML=html+'<div style="margin-top:14px"><button class="btn" id="btnFecharModal">Fechar</button></div>'; el('modalBg').classList.add('on'); el('btnFecharModal').onclick=fecharModal; }
+function fecharModal(){ el('modalBg').classList.remove('on'); }
+el('modalBg').addEventListener('click',function(ev){ if(ev.target===el('modalBg')) fecharModal(); });
+
+/* ===================== ABAS ===================== */
+function irPara(p){
+  var bs=document.querySelectorAll('nav.abas button');
+  for(var i=0;i<bs.length;i++) bs[i].classList.toggle('on', bs[i].getAttribute('data-p')===p);
+  for(var k=1;k<=5;k++){ var pg=el('pg-'+k); if(pg) pg.classList.toggle('on', String(k)===p); }
+  window.scrollTo(0,0);
+}
+el('abas').addEventListener('click',function(ev){
+  var b=ev.target.closest('button'); if(!b) return; irPara(b.getAttribute('data-p'));
+});
+
+/* ===================== ABA 1 — PRIMEIRO PULO ===================== */
+var OPT_TERM=[];
+for(var ti=0;ti<TERMOMETRO.length;ti++) OPT_TERM.push(embaralhar(TERMOMETRO[ti].o, ti*7+33));
+
+function assuntosErrados(){
+  var fora=[];
+  if(!S.term.feito) return fora;
+  for(var i=0;i<TERMOMETRO.length;i++){
+    var sel=S.term.sel[i];
+    var ok = (typeof sel==='number') && OPT_TERM[i][sel] && OPT_TERM[i][sel].c;
+    if(!ok && fora.indexOf(TERMOMETRO[i].a)<0) fora.push(TERMOMETRO[i].a);
+  }
+  return fora;
+}
+
+function renderTermometro(){
+  var cont=el('termConteudo'); cont.innerHTML='';
+  TERMOMETRO.forEach(function(qq,qi){
+    var d=document.createElement('div'); d.className='perg';
+    var h='<div class="num">Pergunta '+(qi+1)+' de 15 · '+pilulaPorId(qq.a).un+'</div><div class="enun">'+qq.q+'</div>';
+    OPT_TERM[qi].forEach(function(op,ai){
+      h+='<label class="alt" data-q="'+qi+'" data-a="'+ai+'"><span class="letra">'+LETRAS[ai]+')</span>'+op.t+'</label>';
+    });
+    h+='<div id="ct-'+qi+'"></div>';
+    d.innerHTML=h; cont.appendChild(d);
+  });
+  TERMOMETRO.forEach(function(qq,qi){ pintarTerm(qi); });
+  cont.onclick=function(ev){
+    var lb=ev.target.closest('.alt'); if(!lb) return;
+    if(S.term.feito) return;
+    var qi=+lb.getAttribute('data-q'), ai=+lb.getAttribute('data-a');
+    S.term.sel[qi]=ai; salvar(); pintarTerm(qi); atualizarQuadra();
+  };
+  atualizarQuadra();
+  if(S.term.feito) mostrarResultadoTerm();
+}
+function pintarTerm(qi){
+  var sel=S.term.sel[qi];
+  var alts=document.querySelectorAll('#termConteudo .alt[data-q="'+qi+'"]');
+  for(var i=0;i<alts.length;i++){
+    var ai=+alts[i].getAttribute('data-a');
+    alts[i].className='alt';
+    if(sel===ai) alts[i].classList.add('sel');
+    if(S.term.feito){
+      if(OPT_TERM[qi][ai].c) alts[i].classList.add('certa');
+      else if(sel===ai) alts[i].classList.add('errada');
+    }
+  }
+  var c=el('ct-'+qi); if(!c) return;
+  if(S.term.feito){
+    var ok=(typeof sel==='number') && OPT_TERM[qi][sel] && OPT_TERM[qi][sel].c;
+    c.innerHTML='<div class="coment '+(ok?'ok':'no')+'">'+(ok?'✅ Isso!':'❌ Não é essa.')+' '+TERMOMETRO[qi].e+'</div>';
+  } else c.innerHTML='';
+}
+function atualizarQuadra(){
+  var q=el('quadraTerm'); q.innerHTML='';
+  for(var i=0;i<TERMOMETRO.length;i++){
+    var sp=document.createElement('span'); sp.textContent=(i+1);
+    var sel=S.term.sel[i];
+    if(S.term.feito && typeof sel==='number'){
+      sp.className=OPT_TERM[i][sel].c?'feito':'erro';
+    } else if(typeof sel==='number'){ sp.className='feito'; }
+    q.appendChild(sp);
+  }
+}
+el('btnTerm').onclick=function(){
+  var faltam=[];
+  for(var i=0;i<TERMOMETRO.length;i++) if(typeof S.term.sel[i]!=='number') faltam.push(i+1);
+  if(faltam.length){
+    abrirModal('<h3>🖍️ Faltam respostas</h3><p>Responda também: <b>'+faltam.join(', ')+'</b>. Assim o Gizinho acerta o que você precisa estudar.</p>');
+    return;
+  }
+  S.term.feito=true; salvar();
+  renderTermometro(); renderPilulas(); atualizarAvisoTreino();
+};
+el('btnTermRefazer').onclick=function(){
+  S.term={sel:{},feito:false}; salvar();
+  el('termResultado').innerHTML='';
+  renderTermometro(); renderPilulas(); atualizarAvisoTreino();
+};
+function mostrarResultadoTerm(){
+  var fora=assuntosErrados();
+  var acertos=0;
+  for(var i=0;i<TERMOMETRO.length;i++){ var s=S.term.sel[i]; if(typeof s==='number'&&OPT_TERM[i][s].c) acertos++; }
+  var h='<div class="placar">🎯 Você acertou <b>'+acertos+' de 15</b></div>';
+  if(!fora.length){
+    h+='<div class="aviso ok">🎉 <b>Você não errou nenhum assunto!</b> Mesmo assim, dê uma passada nas <b>Casas de Giz</b> e vá direto para o <b>Pátio do Treino</b> e a <b>prova final</b>.</div>';
+  } else {
+    h+='<div class="aviso erro"><b>⚠️ Estude PRIMEIRO estes '+fora.length+' assunto(s)</b>, nesta ordem:<ol style="margin:8px 0 0 20px">';
+    fora.forEach(function(id){ h+='<li>'+tituloCurto(id)+'</li>'; });
+    h+='</ol><p style="margin-top:9px">Eles já estão marcados com <b>⚠️</b> na casa 2 (<b>Casas de Giz</b>) e na casa 4 (<b>Pátio do Treino</b>).</p>'+
+       '<button class="btn" id="btnIrPilulas">📖 Ir para as Casas de Giz</button></div>';
+  }
+  el('termResultado').innerHTML=h;
+  if(el('btnIrPilulas')) el('btnIrPilulas').onclick=function(){ irPara('2'); };
+}
+
+/* ===================== ABA 2 — CASAS DE GIZ ===================== */
+function renderPilulas(){
+  var fora=assuntosErrados();
+  var cont=el('listaPilulas'); cont.innerHTML='';
+  PILULAS.forEach(function(p,pi){
+    var rev=fora.indexOf(p.id)>=0;
+    var d=document.createElement('div');
+    d.className='pil'+(rev?' rev':'');
+    d.id='pil-'+p.id;
+    d.innerHTML=
+      '<button class="cab" data-id="'+p.id+'">'+(rev?'⚠️ ':'')+(pi+1)+'. '+p.titulo+
+      '<span class="tag un">'+p.un+'</span>'+(rev?'<span class="tag rev">estude já</span>':'')+'</button>'+
+      '<div class="corpo">'+
+        '<div class="regra"><b>📏 A regra:</b> '+p.regra+'</div>'+
+        '<div class="exemplo"><b>🔎 Exemplo / detalhes:</b> '+p.exemplo+'</div>'+
+        '<div class="cai"><b>📝 Como costuma cair na prova:</b> '+p.cai+'</div>'+
+      '</div>';
+    cont.appendChild(d);
+  });
+  cont.onclick=function(ev){
+    var b=ev.target.closest('button.cab'); if(!b) return;
+    b.parentNode.classList.toggle('aberta');
+  };
+  var av=el('avisoPilulas');
+  if(!S.term.feito){
+    av.className='aviso';
+    av.innerHTML='Faça o <b>Primeiro Pulo</b> (casa 1) para o Gizinho marcar aqui o que é mais urgente.';
+  } else if(fora.length){
+    av.className='aviso erro';
+    av.innerHTML='⚠️ Pelo Primeiro Pulo, comece por estas <b>'+fora.length+'</b>: '+fora.map(function(id){return tituloCurto(id);}).join(' · ');
+  } else {
+    av.className='aviso ok';
+    av.innerHTML='✅ No Primeiro Pulo você acertou todos os assuntos. Leia por cima e vá para o treino.';
+  }
+}
+el('btnAbrirTodas').onclick=function(){ var ps=document.querySelectorAll('#listaPilulas .pil'); for(var i=0;i<ps.length;i++) ps[i].classList.add('aberta'); };
+el('btnFecharTodas').onclick=function(){ var ps=document.querySelectorAll('#listaPilulas .pil'); for(var i=0;i<ps.length;i++) ps[i].classList.remove('aberta'); };
+
+/* ===================== ABA 3 — PISOU NA LINHA ===================== */
+function renderCards(){
+  var cont=el('listaCards'); cont.innerHTML='';
+  PEGADINHAS.forEach(function(c,ci){
+    var d=document.createElement('div');
+    d.className='card'+(S.cards[ci]?' virado':'');
+    d.setAttribute('data-c',ci);
+    d.innerHTML='<div class="frente">'+(ci+1)+'. '+c.f+'</div><div class="atras">'+c.t+'</div>'+
+                '<div class="dica-virar" style="margin-top:9px;font-size:.85rem;color:#6E6A72;display:'+(S.cards[ci]?'none':'block')+'">👆 clique para ver o certo</div>';
+    cont.appendChild(d);
+  });
+  cont.onclick=function(ev){
+    var c=ev.target.closest('.card'); if(!c) return;
+    var ci=+c.getAttribute('data-c');
+    S.cards[ci]=!S.cards[ci]; salvar();
+    c.classList.toggle('virado', !!S.cards[ci]);
+    var dica=c.querySelector('.dica-virar');
+    if(dica) dica.style.display = S.cards[ci] ? 'none' : 'block';
+    placarCards();
+  };
+  placarCards();
+}
+function placarCards(){
+  var n=0; for(var k in S.cards) if(S.cards[k]) n++;
+  el('placarCards').innerHTML='Cartões virados: <b>'+n+'</b> de 16'+(n===16?' 🎉 todos!':'');
+}
+
+/* --- Pula-Pula --- */
+var ppRodadas=[], ppAtual=0, ppAcertos=0;
+function ppInicio(){
+  var h='<p>🏅 Melhor resultado: <b>'+S.pp.melhor+' de 12</b> · jogos: <b>'+S.pp.jogos+'</b></p>'+
+        '<button class="btn verde" id="btnPP">🦶 Começar as 12 rodadas</button>';
+  el('ppCaixa').innerHTML=h;
+  el('btnPP').onclick=ppComecar;
+}
+function ppComecar(){
+  var seed=Math.floor(Math.random()*100000)+1;
+  ppRodadas=embaralhar(PULAPULA,seed).slice(0,12);
+  ppAtual=0; ppAcertos=0; ppMostrar();
+}
+function ppMostrar(){
+  if(ppAtual>=ppRodadas.length){
+    if(ppAcertos>S.pp.melhor) S.pp.melhor=ppAcertos;
+    S.pp.jogos=(S.pp.jogos||0)+1; salvar();
+    var msg = ppAcertos>=10?'🎉 Muito bem! Você está firme nas pegadinhas.' : (ppAcertos>=7?'👍 Bom! Vire de novo os cartões dos que você errou.' : '🖍️ Volte aos 16 cartões acima e depois jogue outra vez.');
+    el('ppCaixa').innerHTML='<div class="placar">Fim! Você acertou <b>'+ppAcertos+' de 12</b></div><p style="margin-top:10px">'+msg+'</p>'+
+      '<button class="btn verde" id="btnPP2">🔁 Jogar de novo (rodadas novas)</button>';
+    el('btnPP2').onclick=ppComecar;
+    return;
+  }
+  var r=ppRodadas[ppAtual];
+  var ordem=embaralhar([0,1], ppAtual*13+r.p.length+7);
+  var h='<div class="num" style="font-size:.8rem;color:#6E6A72;font-weight:bold">Rodada '+(ppAtual+1)+' de 12</div>'+
+        '<div class="enun" style="font-weight:bold;margin:6px 0 2px">'+r.p+'</div><div class="duas">';
+  ordem.forEach(function(oi){ h+='<button data-o="'+oi+'">'+r.o[oi]+'</button>'; });
+  h+='</div><div class="barra"><i style="width:'+Math.round(ppAtual/12*100)+'%"></i></div>'+
+     '<div style="margin-top:8px;font-size:.9rem">Acertos até agora: <b>'+ppAcertos+'</b></div>';
+  el('ppCaixa').innerHTML=h;
+  var bts=el('ppCaixa').querySelectorAll('.duas button');
+  for(var i=0;i<bts.length;i++){
+    bts[i].onclick=function(){
+      var oi=+this.getAttribute('data-o');
+      var ok=(oi===r.c);
+      if(ok) ppAcertos++;
+      var cx=document.createElement('div');
+      cx.className='coment '+(ok?'ok':'no');
+      cx.innerHTML=(ok?'✅ Certo! ':'❌ Era <b>'+r.o[r.c]+'</b>. ')+r.e;
+      el('ppCaixa').appendChild(cx);
+      var bts2=el('ppCaixa').querySelectorAll('.duas button');
+      for(var j=0;j<bts2.length;j++) bts2[j].disabled=true;
+      var seg=document.createElement('button');
+      seg.className='btn'; seg.textContent=(ppAtual===11?'Ver resultado':'Próxima rodada ▶');
+      seg.onclick=function(){ ppAtual++; ppMostrar(); };
+      el('ppCaixa').appendChild(seg);
+    };
+  }
+}
+
+/* ===================== ABA 4 — PÁTIO DO TREINO ===================== */
+var OPT_TREINO=[];
+TREINO.forEach(function(fam,fi){
+  OPT_TREINO.push(fam.qs.map(function(q,qi){ return embaralhar(q.o, (fi+1)*97+qi*29+5); }));
+});
+var NOMES_NIVEL={f:'fácil',m:'médio',p:'nível prova'};
+
+function renderTreino(){
+  var fora=assuntosErrados();
+  var cont=el('listaTreino'); cont.innerHTML='';
+  TREINO.forEach(function(fam,fi){
+    var urg=fam.assuntos.some(function(a){return fora.indexOf(a)>=0;});
+    var d=document.createElement('div'); d.className='fam';
+    var h='<h3>'+(urg?'⚠️ ':'')+fam.nome+'</h3><div class="conteudo">';
+    fam.qs.forEach(function(q,qi){
+      h+='<div class="perg"><div class="num">Exercício '+(qi+1)+' de '+fam.qs.length+'<span class="nivel '+q.n+'">'+NOMES_NIVEL[q.n]+'</span></div><div class="enun">'+q.q+'</div>';
+      OPT_TREINO[fi][qi].forEach(function(op,ai){
+        h+='<label class="alt" data-f="'+fi+'" data-q="'+qi+'" data-a="'+ai+'"><span class="letra">'+LETRAS[ai]+')</span>'+op.t+'</label>';
+      });
+      h+='<div id="cx-'+fi+'-'+qi+'"></div></div>';
+    });
+    h+='</div>';
+    d.innerHTML=h; cont.appendChild(d);
+  });
+  TREINO.forEach(function(fam,fi){ fam.qs.forEach(function(q,qi){ pintarTreino(fi,qi); }); });
+  cont.onclick=function(ev){
+    var lb=ev.target.closest('.alt'); if(!lb) return;
+    var fi=+lb.getAttribute('data-f'), qi=+lb.getAttribute('data-q'), ai=+lb.getAttribute('data-a');
+    var k=fi+'-'+qi;
+    if(typeof S.treino.sel[k]==='number') return;
+    S.treino.sel[k]=ai; salvar(); pintarTreino(fi,qi); placarTreino();
+  };
+  placarTreino(); atualizarAvisoTreino();
+}
+function pintarTreino(fi,qi){
+  var k=fi+'-'+qi, sel=S.treino.sel[k];
+  var alts=document.querySelectorAll('#listaTreino .alt[data-f="'+fi+'"][data-q="'+qi+'"]');
+  for(var i=0;i<alts.length;i++){
+    var ai=+alts[i].getAttribute('data-a');
+    alts[i].className='alt';
+    if(typeof sel==='number'){
+      if(OPT_TREINO[fi][qi][ai].c) alts[i].classList.add('certa');
+      else if(sel===ai) alts[i].classList.add('errada');
+      if(sel===ai) alts[i].classList.add('sel');
+    }
+  }
+  var c=el('cx-'+fi+'-'+qi); if(!c) return;
+  if(typeof sel==='number'){
+    var ok=OPT_TREINO[fi][qi][sel].c;
+    c.innerHTML='<div class="coment '+(ok?'ok':'no')+'">'+(ok?'✅ Certo! ':'❌ Não. ')+TREINO[fi].qs[qi].e+'</div>';
+  } else c.innerHTML='';
+}
+function contaTreino(){
+  var resp=0, ac=0;
+  TREINO.forEach(function(fam,fi){ fam.qs.forEach(function(q,qi){
+    var sel=S.treino.sel[fi+'-'+qi];
+    if(typeof sel==='number'){ resp++; if(OPT_TREINO[fi][qi][sel].c) ac++; }
+  });});
+  return {resp:resp,ac:ac};
+}
+function placarTreino(){
+  var c=contaTreino();
+  el('placarTreino').innerHTML='Respondidas: <b>'+c.resp+'</b> de 28 · Acertos: <b>'+c.ac+'</b>'+(c.resp===28?' 🎉 treino completo!':'');
+}
+function atualizarAvisoTreino(){
+  var fora=assuntosErrados(), av=el('avisoTreino');
+  if(!av) return;
+  if(!S.term.feito){ av.className='aviso'; av.innerHTML='Faça o <b>Primeiro Pulo</b> (casa 1) e o Gizinho marca aqui as famílias mais urgentes.'; }
+  else if(fora.length){ av.className='aviso erro'; av.innerHTML='⚠️ As famílias marcadas com ⚠️ têm os assuntos que você errou no Primeiro Pulo. Comece por elas.'; }
+  else { av.className='aviso ok'; av.innerHTML='✅ Você acertou todos os assuntos no Primeiro Pulo: faça as famílias na ordem.'; }
+  if(el('listaTreino') && el('listaTreino').children.length) marcarFamilias(fora);
+}
+function marcarFamilias(fora){
+  var hs=document.querySelectorAll('#listaTreino .fam > h3');
+  for(var i=0;i<hs.length;i++){
+    var urg=TREINO[i].assuntos.some(function(a){return fora.indexOf(a)>=0;});
+    var txt=TREINO[i].nome;
+    hs[i].innerHTML=(urg?'⚠️ ':'')+txt;
+  }
+}
+
+/* ===================== ABA 5 — CHEGAR NO CÉU ===================== */
+var OPT_PROVA=[];
+for(var pi2=0;pi2<PROVA.length;pi2++) OPT_PROVA.push(embaralhar(PROVA[pi2].o, pi2*131+23));
+
+function renderProva(){
+  var cont=el('listaProva'); cont.innerHTML='';
+  PROVA.forEach(function(qq,qi){
+    var d=document.createElement('div'); d.className='cartao';
+    var h='<div class="num">Questão '+(qi+1)+' de 20</div><div class="enun">'+qq.q+'</div>';
+    OPT_PROVA[qi].forEach(function(op,ai){
+      h+='<label class="alt" data-q="'+qi+'" data-a="'+ai+'"><span class="letra">'+LETRAS[ai]+')</span>'+op.t+'</label>';
+    });
+    h+='<div id="cp-'+qi+'"></div>';
+    d.innerHTML=h; cont.appendChild(d);
+  });
+  PROVA.forEach(function(q,qi){ pintarProva(qi); });
+  cont.onclick=function(ev){
+    var lb=ev.target.closest('.alt'); if(!lb) return;
+    if(S.prova.feito) return;
+    var qi=+lb.getAttribute('data-q'), ai=+lb.getAttribute('data-a');
+    S.prova.sel[qi]=ai; salvar(); pintarProva(qi); placarProva();
+  };
+  placarProva();
+  if(S.prova.feito) mostrarResultadoProva();
+}
+function pintarProva(qi){
+  var sel=S.prova.sel[qi];
+  var alts=document.querySelectorAll('#listaProva .alt[data-q="'+qi+'"]');
+  for(var i=0;i<alts.length;i++){
+    var ai=+alts[i].getAttribute('data-a');
+    alts[i].className='alt';
+    if(sel===ai) alts[i].classList.add('sel');
+    if(S.prova.feito){
+      if(OPT_PROVA[qi][ai].c) alts[i].classList.add('certa');
+      else if(sel===ai) alts[i].classList.add('errada');
+    }
+  }
+  var c=el('cp-'+qi); if(!c) return;
+  if(S.prova.feito){
+    var ok=(typeof sel==='number')&&OPT_PROVA[qi][sel].c;
+    var letraCerta='';
+    for(var j=0;j<OPT_PROVA[qi].length;j++) if(OPT_PROVA[qi][j].c) letraCerta=LETRAS[j];
+    c.innerHTML='<div class="coment '+(ok?'ok':'no')+'">'+(ok?'✅ Certo!':'❌ A certa era a <b>letra '+letraCerta+'</b>.')+' '+PROVA[qi].e+'</div>';
+  } else c.innerHTML='';
+}
+function placarProva(){
+  var n=0; for(var i=0;i<PROVA.length;i++) if(typeof S.prova.sel[i]==='number') n++;
+  el('placarProva').innerHTML='Respondidas: <b>'+n+'</b> de 20'+(S.prova.feito?' · prova enviada':'');
+}
+el('btnEnviarProva').onclick=function(){
+  if(S.prova.feito){ abrirModal('<h3>📨 Prova já enviada</h3><p>O gabarito comentado está em cada questão. Para tentar outra vez, clique em <b>Refazer a prova</b>.</p>'); return; }
+  var faltam=[];
+  for(var i=0;i<PROVA.length;i++) if(typeof S.prova.sel[i]!=='number') faltam.push(i+1);
+  if(faltam.length){
+    abrirModal('<h3>🖍️ Ainda faltam questões</h3><p>Responda também: <b>'+faltam.join(', ')+'</b>. Na prova de verdade não dá para deixar em branco!</p>');
+    return;
+  }
+  S.prova.feito=true; salvar();
+  renderProva();
+  el('resultadoProva').scrollIntoView({behavior:'smooth',block:'center'});
+};
+el('btnRefazerProva').onclick=function(){
+  if(!S.prova.feito && !Object.keys(S.prova.sel).length){ abrirModal('<h3>Nada para apagar</h3><p>Você ainda não respondeu nada na prova final.</p>'); return; }
+  S.prova={sel:{},feito:false}; salvar();
+  el('resultadoProva').innerHTML='';
+  renderProva();
+};
+function contaProva(){
+  var ac=0, erradas=[];
+  for(var i=0;i<PROVA.length;i++){
+    var sel=S.prova.sel[i];
+    if(typeof sel==='number'&&OPT_PROVA[i][sel].c) ac++;
+    else erradas.push(PROVA[i].a);
+  }
+  return {ac:ac,erradas:erradas};
+}
+function mostrarResultadoProva(){
+  var c=contaProva();
+  var pct=Math.round(c.ac/PROVA.length*100);
+  var estrelas = pct>=80?'🌟🌟🌟' : (pct>=50?'🌟🌟':'🌟');
+  var h='<div class="placar">'+estrelas+' Você acertou <b>'+c.ac+' de 20</b> ('+pct+'%)</div>';
+  var unicos=[];
+  c.erradas.forEach(function(id){ if(unicos.indexOf(id)<0) unicos.push(id); });
+  if(!unicos.length){
+    h+='<div class="aviso ok">🎉 <b>20 de 20!</b> Chegou no Céu da amarelinha. Dê uma última olhada nos cartões de <b>Pisou na Linha!</b> e vá descansar — está pronto para a prova.</div>';
+  } else {
+    h+='<div class="aviso prova"><b>📌 Revise estes assuntos antes da prova</b> (são os das questões que você errou):<ol style="margin:8px 0 0 20px">';
+    unicos.forEach(function(id){ h+='<li>'+tituloCurto(id)+'</li>'; });
+    h+='</ol><p style="margin-top:9px">Abra essas casas na aba <b>Casas de Giz</b>, leia a caixinha “Como costuma cair na prova” e refaça a família do <b>Pátio do Treino</b> que trata delas.</p></div>';
+  }
+  if(pct<50) h+='<div class="aviso erro">🖍️ Menos da metade: volte às <b>Casas de Giz</b> dos assuntos acima, vire os cartões e depois refaça a prova. Dá tempo!</div>';
+  el('resultadoProva').innerHTML=h;
+}
+
+/* ===================== BARRA DE BAIXO: PAIS-77 E LIMPAR ===================== */
+el('btnPais').onclick=function(){
+  var cod=(el('inpPais').value||'').trim().toUpperCase();
+  if(cod!==COD_PAIS){
+    abrirModal('<h3>🔒 Código não reconhecido</h3><p>Esse campo é para o relatório dos pais. Peça o código a eles.</p>');
+    return;
+  }
+  el('inpPais').value='';
+  var fora=assuntosErrados();
+  var t=contaTreino(), cp=contaProva();
+  var nCards=0; for(var k in S.cards) if(S.cards[k]) nCards++;
+  var h='<h3>👨‍👩‍👧 Relatório dos pais — Amarelinha do Giz</h3>'+
+    '<p style="font-size:.9rem;color:#6E6A72">História · 5º ano · recuperação do 3º trimestre</p>'+
+    '<table class="rel"><tr><th>Casa</th><th>Como está</th></tr>'+
+    '<tr><td>1. Primeiro Pulo</td><td>'+(S.term.feito?('feito — '+(15-fora.length)+' assunto(s) certos de 15'):'ainda não finalizado')+'</td></tr>'+
+    '<tr><td>2. Casas de Giz</td><td>'+(S.term.feito?(fora.length?fora.length+' casa(s) marcadas com ⚠️':'nenhuma casa urgente'):'sem marcação (depende da casa 1)')+'</td></tr>'+
+    '<tr><td>3. Pisou na Linha!</td><td>'+nCards+' de 16 cartões virados · Pula-Pula: melhor '+S.pp.melhor+' de 12 em '+(S.pp.jogos||0)+' jogo(s)</td></tr>'+
+    '<tr><td>4. Pátio do Treino</td><td>'+t.resp+' de 28 respondidas · '+t.ac+' acerto(s)</td></tr>'+
+    '<tr><td>5. Chegar no Céu</td><td>'+(S.prova.feito?(cp.ac+' de 20 acertos ('+Math.round(cp.ac/20*100)+'%)'):'prova ainda não enviada')+'</td></tr>'+
+    '</table>';
+  var reforcar=[];
+  fora.forEach(function(id){ if(reforcar.indexOf(id)<0) reforcar.push(id); });
+  if(S.prova.feito) cp.erradas.forEach(function(id){ if(reforcar.indexOf(id)<0) reforcar.push(id); });
+  if(reforcar.length){
+    h+='<p style="margin-top:12px"><b>O que reforçar com a criança:</b></p><ol style="margin:6px 0 0 20px">';
+    reforcar.forEach(function(id){ h+='<li>'+tituloCurto(id)+'</li>'; });
+    h+='</ol>';
+  } else {
+    h+='<p style="margin-top:12px"><b>O que reforçar:</b> nada pendente nos itens já feitos.</p>';
+  }
+  abrirModal(h);
+};
+el('btnLimpar').onclick=function(){
+  abrirModal('<h3>🧽 Apagar minhas respostas?</h3><p>Isso apaga <b>só as respostas deste kit de História</b>. Os outros kits continuam intactos.</p>'+
+    '<button class="btn rosa" id="btnLimparSim">Sim, apagar tudo deste kit</button>');
+  el('btnLimparSim').onclick=function(){
+    apagarSoDesteKit();
+    S={term:{sel:{},feito:false},cards:{},treino:{sel:{}},prova:{sel:{},feito:false},pp:{melhor:0,jogos:0}};
+    salvar();
+    el('termResultado').innerHTML=''; el('resultadoProva').innerHTML='';
+    renderTermometro(); renderPilulas(); renderCards(); ppInicio(); renderTreino(); renderProva();
+    fecharModal();
+    abrirModal('<h3>✅ Pronto</h3><p>As respostas deste kit foram apagadas. A amarelinha está em branco de novo.</p>');
+  };
+};
+
+/* ===================== INÍCIO ===================== */
+renderTermometro();
+renderPilulas();
+renderCards();
+ppInicio();
+renderTreino();
+renderProva();
+gravar(S);
+</script>
+</body>
+</html>
